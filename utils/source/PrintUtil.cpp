@@ -26,21 +26,27 @@ const std::string PrintTime(std::chrono::high_resolution_clock::time_point & tSt
             if (duration.count() > 1000) {
                 // s
                 auto duration = std::chrono::duration_cast<std::chrono::seconds>(tStop - tStart);
-                
-                if (duration.count() > 1000) {
+                if (duration.count() > 60) {
+                    // mins
                     auto duration = std::chrono::duration_cast<std::chrono::minutes>(tStop - tStart);
-                    ss << duration.count() << " min";
+                    if (duration.count() > 60) {
+                        // hrs
+                        auto duration = std::chrono::duration_cast<std::chrono::hours>(tStop - tStart);
+                        ss << duration.count() << " hrs";
+                    } else {
+                        ss << duration.count() << " min";
+                    }
                 } else {
                     ss << duration.count() << " s";
                 }                
             } else {
-            ss << duration.count() << " ms";
+                ss << duration.count() << " ms";
             }
         } else {
-        ss << duration.count() << " us";
+            ss << duration.count() << " us";
         }
     }else {
-    ss << duration.count() << " ns";
+        ss << duration.count() << " ns";
     }
     
     return ss.str();
