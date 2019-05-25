@@ -1,5 +1,5 @@
-#ifndef __BUBBLESORT_HPP__
-#define __BUBBLESORT_HPP__
+#ifndef BUBBLESORT_HPP
+#define BUBBLESORT_HPP
 #include <cstdint>
 #include <vector>
 
