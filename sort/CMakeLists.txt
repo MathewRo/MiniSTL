@@ -11,10 +11,10 @@ link_directories(
 	${RUNTIME_PATH}/sort
 	)
 
-add_executable( bsort
+add_executable( sort
 	BubbleSort.cpp
-	Swap.cpp
+        SelectionSort.cpp
 	driver.cpp
 	)
-target_link_libraries(bsort)
+target_link_libraries(sort)
 
