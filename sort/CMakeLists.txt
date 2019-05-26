@@ -17,6 +17,7 @@ add_executable( sort
 	source/BubbleSort.cpp
         source/SelectionSort.cpp
         source/InsertionSort.cpp
+        source/QuickSort.cpp
 
         ../utils/source/PrintUtil.cpp
 

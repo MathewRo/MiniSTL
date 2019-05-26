@@ -9,6 +9,7 @@
 #include "BubbleSort.hpp"
 #include "SelectionSort.hpp"
 #include "InsertionSort.hpp"
+#include "QuickSort.hpp"
 #include "PrintUtil.hpp"
 
 #define ERROR 1
@@ -46,7 +47,7 @@ int main(int argc, char ** argv) {
 	PrintArray(array);
 	std::cout << "BubbleSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
-
+    
     
     {
 	PrintArray(array);
@@ -56,7 +57,7 @@ int main(int argc, char ** argv) {
 	PrintArray(array);
 	std::cout << "SelectionSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
-#endif    
+    
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -65,6 +66,17 @@ int main(int argc, char ** argv) {
 	PrintArray(array);
 	std::cout << "InsertionSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
-
+    
+#endif    
+    
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+	QuickSort(array, 0, array.size() - 1);
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "QuickSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
+    
     return SUCCESS;
 }
