@@ -3,7 +3,7 @@
 #include <iostream>
 
 void PrintArray(const std::vector<uint64_t> & arr) {
-#if 0    
+#if 1    
     for (std::vector<uint64_t> :: const_iterator c_it = arr.begin(); c_it != arr.end(); c_it++) {
         std::cout << *c_it << " " ;
     }

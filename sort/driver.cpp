@@ -72,7 +72,7 @@ int main(int argc, char ** argv) {
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
-	QuickSort(array, 0, array.size() - 1);
+	QuickSortIterative(array, 0, array.size() - 1);
         auto stopTime = std::chrono::high_resolution_clock::now();
 	PrintArray(array);
 	std::cout << "QuickSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 

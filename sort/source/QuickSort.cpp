@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "QuickSort.hpp"
+#include <stack>
 
 /**
  *  Helper partition function
@@ -41,5 +42,26 @@ void QuickSort(std::vector <uint64_t> & arr, const uint64_t & low, const uint64_
         //This is supposed to be log(n) operation
         QuickSort(arr, low, p - 1);
         QuickSort(arr, p + 1, high );
+    }
+}
+
+/**
+ * Iterative Quick Sort
+ * @param arr
+ * @param low
+ * @param high
+ */
+void QuickSortIterative(std::vector<uint64_t>& arr, const uint64_t& low, const uint64_t& high) {
+    std::stack<std::pair<uint64_t, uint64_t > > rangeStack;
+    rangeStack.push(std::make_pair(low, high));
+    
+    while (!rangeStack.empty()) {
+        uint64_t start = rangeStack.top().first;
+        uint64_t end = rangeStack.top().second;
+        rangeStack.pop();
+        // find the pivot
+        uint64_t p = Partition(arr, start, end);
+        if (p - 1 > start) rangeStack.push(std::make_pair(start, p - 1));
+        if (end > p + 1) rangeStack.push(std::make_pair(p + 1, end));
     }
 }
