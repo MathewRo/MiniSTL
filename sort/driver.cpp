@@ -10,6 +10,7 @@
 #include "SelectionSort.hpp"
 #include "InsertionSort.hpp"
 #include "QuickSort.hpp"
+#include "MergeSort.hpp"
 #include "PrintUtil.hpp"
 
 #define ERROR 1
@@ -76,6 +77,15 @@ int main(int argc, char ** argv) {
         auto stopTime = std::chrono::high_resolution_clock::now();
 	PrintArray(array);
 	std::cout << "QuickSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
+
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+	MergeSort(array, 0, array.size() - 1);
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "MergeSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
     
     return SUCCESS;
