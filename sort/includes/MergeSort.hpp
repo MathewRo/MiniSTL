@@ -4,6 +4,7 @@
 #include <cstdint>
 
 void MergeSort(std::vector <uint64_t> & arr, const uint64_t &low, const uint64_t & high);
+void MergeSortIterative(std::vector <uint64_t> & arr, const uint64_t &low, const uint64_t & high);
 
 #endif /* MERGESORT_HPP */
 
