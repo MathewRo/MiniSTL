@@ -1,10 +1,10 @@
 nbproject
-sort/build/*
-!sort/build/.gitkeep 
-sort/bin/*
-!sort/bin/.gitkeep 
-sort/libraries/*
-!sort/libraries/.gitkeep 
+algorithm/sort/build/*
+!algorithm/sort/build/.gitkeep 
+algorithm/sort/bin/*
+!algorithm/sort/bin/.gitkeep 
+algorithm/sort/libraries/*
+!algorithm/sort/libraries/.gitkeep 
 *.o
 *.so
 
