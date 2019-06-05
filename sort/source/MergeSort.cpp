@@ -1,4 +1,5 @@
 #include "MergeSort.hpp"
+#include <algorithm>
 
 
 /**
@@ -69,5 +70,23 @@ void MergeSort(std::vector <uint64_t> & arr, const uint64_t & low, const uint64_
         MergeSort(arr, mid + 1, high);
         // this is called approx log(n) times
         Merge(arr, low, mid, high);
+    }
+}
+
+/**
+ * Iterative approach to merge sort
+ * @param arr
+ * @param low
+ * @param high
+ */
+void MergeSortIterative(std::vector <uint64_t> & arr, const uint64_t & low, const uint64_t & high) {
+    
+    for (uint64_t i = 1; i <= (high - low); i *= 2) {
+        for (uint64_t left_end = 0; left_end < (high - low); left_end += 2*i) {
+            uint64_t mid = std::min(left_end + i - 1, high - low);
+            uint64_t right_end = std::min (left_end + 2*i - 1, high - low);
+            // this is called approx log(n) times
+            Merge(arr, left_end, mid, right_end);
+        }
     }
 }

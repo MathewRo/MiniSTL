@@ -38,7 +38,7 @@ int main(int argc, char ** argv) {
     for (uint64_t i = 0; i < N; i++) {
         array.push_back(rand()%INT_MAX);
     }
-    
+    std::vector<uint64_t> arr_cpy(array);
 #if 1	
     {
 	PrintArray(array);
@@ -49,7 +49,7 @@ int main(int argc, char ** argv) {
 	std::cout << "BubbleSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
     
-    
+    array = arr_cpy;
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -59,6 +59,7 @@ int main(int argc, char ** argv) {
 	std::cout << "SelectionSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
     
+    array = arr_cpy;
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -69,16 +70,27 @@ int main(int argc, char ** argv) {
     }
     
 #endif    
-    
+    array = arr_cpy;
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+	QuickSort(array, 0, array.size() - 1);
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "QuickSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
+
+    array = arr_cpy;
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
 	QuickSortIterative(array, 0, array.size() - 1);
         auto stopTime = std::chrono::high_resolution_clock::now();
 	PrintArray(array);
-	std::cout << "QuickSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+	std::cout << "QuickSort Iterative - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
 
+    array = arr_cpy;
     {
 	PrintArray(array);
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -87,6 +99,17 @@ int main(int argc, char ** argv) {
 	PrintArray(array);
 	std::cout << "MergeSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
+
+    array = arr_cpy;
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+	MergeSortIterative(array, 0, array.size() - 1);
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "MergeSortIterative - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
+
     
     return SUCCESS;
 }
