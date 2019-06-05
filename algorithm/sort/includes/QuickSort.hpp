@@ -1,10 +1,10 @@
 #ifndef QUICKSORT_HPP
 #define QUICKSORT_HPP
-#include <cstdint>
+#include <cstddef>
 #include <vector>
 
-void QuickSort(std::vector <uint64_t> & arr, const uint64_t & low, const uint64_t & high);
-void QuickSortIterative(std::vector <uint64_t> & arr, const uint64_t & low, const uint64_t & high);
+void QuickSort(std::vector <size_t> & arr, const size_t & low, const size_t & high);
+void QuickSortIterative(std::vector <size_t> & arr, const size_t & low, const size_t & high);
 
 #endif /* QUICKSORT_HPP */
 

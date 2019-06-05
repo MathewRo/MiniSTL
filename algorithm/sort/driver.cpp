@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
-#include <cstdint>
+#include <cstddef>
 #include <ctime>
 #include <vector>
 #include <chrono>
@@ -29,16 +29,16 @@ int main(int argc, char ** argv) {
         return ERROR;
     }
     
-    uint64_t N = atol(argv[1]);
-    std::vector<uint64_t> array;
+    size_t N = atol(argv[1]);
+    std::vector<size_t> array;
     
     /* use current time */
     srand(time(NULL));
     
-    for (uint64_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         array.push_back(rand()%INT_MAX);
     }
-    std::vector<uint64_t> arr_cpy(array);
+    std::vector<size_t> arr_cpy(array);
 #if 1	
     {
 	PrintArray(array);

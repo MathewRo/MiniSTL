@@ -1,10 +1,10 @@
 #ifndef MERGESORT_HPP
 #define MERGESORT_HPP
 #include <vector>
-#include <cstdint>
+#include <cstddef>
 
-void MergeSort(std::vector <uint64_t> & arr, const uint64_t &low, const uint64_t & high);
-void MergeSortIterative(std::vector <uint64_t> & arr, const uint64_t &low, const uint64_t & high);
+void MergeSort(std::vector <size_t> & arr, const size_t &low, const size_t & high);
+void MergeSortIterative(std::vector <size_t> & arr, const size_t &low, const size_t & high);
 
 #endif /* MERGESORT_HPP */
 

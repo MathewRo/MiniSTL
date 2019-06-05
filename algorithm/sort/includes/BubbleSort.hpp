@@ -1,7 +1,7 @@
 #ifndef BUBBLESORT_HPP
 #define BUBBLESORT_HPP
-#include <cstdint>
+#include <cstddef>
 #include <vector>
 
-void BubbleSort(std::vector <uint64_t> & arr);
+void BubbleSort(std::vector <size_t> & arr);
 #endif
