@@ -27,7 +27,7 @@ set_target_properties(mSort PROPERTIES PUBLIC_HEADER ${RUNTIME_PATH}
 
 link_directories(	
 	${RUNTIME_PATH}/algorithm/sort/libraries
-        ${RUNTIME_PATH}/algorithm/utils/libraries
+        ${RUNTIME_PATH}/utils/libraries
 	)
 
 add_executable(sort
