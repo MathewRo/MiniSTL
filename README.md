@@ -1,2 +1,2 @@
 # Learning
-Library for learning Algorithms and Data Structures
+'Mini' Implementation of STL lib
