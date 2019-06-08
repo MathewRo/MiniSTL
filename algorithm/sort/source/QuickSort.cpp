@@ -31,7 +31,6 @@ static size_t Partition(std::vector<size_t> & arr, const size_t & low, const siz
 
 /**
  * Recursive quick sort algorithm. 
- * https://www.geeksforgeeks.org/quick-sort/
  * @param arr - array to be sorted in place
  * @param low - lowest index 
  * @param high - highest index

@@ -5,7 +5,6 @@
  * Bubble Sort Implementation O(n^2)
  * @param arr
  * 
- * https://www.hackerearth.com/practice/algorithms/sorting/bubble-sort/tutorial/
  */
 void BubbleSort(std::vector <size_t> & arr) {
 	size_t N = arr.size();
