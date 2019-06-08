@@ -58,7 +58,6 @@ static void Merge(std::vector <size_t> & arr, const size_t &low, const size_t &m
  * Recursevely breaks the given array until it can no longer be divided
  * Recurrence Reln T(n) = 2T(n/2) + Theta(n)
  * Total Complexity = Theta(nLogn)
- * https://www.geeksforgeeks.org/merge-sort/
  * @param arr
  * @param low
  * @param high

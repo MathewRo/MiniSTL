@@ -7,7 +7,6 @@
  * (N-1) + (N-2) + ... 1 = (N-1)(N-2)/2 = O(N^2)
  * @param arr
  * 
- *https://www.hackerearth.com/practice/algorithms/sorting/selection-sort/tutorial/
  */
 void SelectionSort(std::vector<size_t>& arr) {
     size_t N = arr.size();

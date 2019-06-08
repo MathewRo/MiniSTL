@@ -5,7 +5,6 @@
  * @param arr
  * TC O(n^2)
  * 
- * https://www.hackerearth.com/practice/algorithms/sorting/insertion-sort/tutorial/
  */
 void InsertionSort(std::vector<size_t>& arr) {
     size_t N = arr.size();
