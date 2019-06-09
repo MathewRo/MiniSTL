@@ -8,10 +8,11 @@ addons:
     packages:
       - gcc-6
       - g++-6
+
+before_script: cd algorithms/sort/build
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - cd algorithms/sort/build
-    - rm -rf *
     - cmake .. && make -j4
+
