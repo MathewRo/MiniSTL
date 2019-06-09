@@ -12,6 +12,7 @@
 #include "QuickSort.hpp"
 #include "MergeSort.hpp"
 #include "PrintUtil.hpp"
+#include "HeapSort.hpp"
 
 #define ERROR 1
 #define SUCCESS 0
@@ -108,6 +109,16 @@ int main(int argc, char ** argv) {
         auto stopTime = std::chrono::high_resolution_clock::now();
 	PrintArray(array);
 	std::cout << "MergeSortIterative - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
+
+    array = arr_cpy;
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+	HeapSort(array);
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "HeapSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
 
     

@@ -15,7 +15,9 @@ add_library(mSort SHARED
 	${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp 
         ${RUNTIME_PATH}/algorithm/sort/source/SelectionSort.cpp 
         ${RUNTIME_PATH}/algorithm/sort/source/InsertionSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/QuickSort.cpp source/MergeSort.cpp 
+        ${RUNTIME_PATH}/algorithm/sort/source/QuickSort.cpp 
+        ${RUNTIME_PATH}/algorithm/sort/source/MergeSort.cpp 
+        ${RUNTIME_PATH}/algorithm/sort/source/HeapSort.cpp 
         ${RUNTIME_PATH}/utils/source/PrintUtil.cpp
         )
 
