@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "QuickSort.hpp"
 #include <stack>
-
+#include <iostream>
 /**
  *  Helper partition function
  * @param arr
@@ -9,7 +9,7 @@
  * @param high
  * @return 
  */
-static size_t Partition(std::vector<size_t> & arr, const size_t & low, const size_t & high) {
+static size_t Partition(std::vector<size_t> & arr, const int64_t & low, const int64_t & high) {
     
     int64_t i = low - 1;
     size_t pivot = arr[high];
@@ -18,15 +18,14 @@ static size_t Partition(std::vector<size_t> & arr, const size_t & low, const siz
     // all the elements to the left of pivot are larger
     // than pivot. This implies that pivot gets moves to its
     // original position after the loop gets over. O(n)
-    for (size_t j = low; j < high ; j++) {
+    for (int64_t j = low; j < high ; j++) {
         if ( arr[j] < pivot ) {
-            i += 1;
-            std::swap(arr[i], arr[j]);
+            std::swap(arr[++i], arr[j]);
         }
     }
     // i+1 would be the new index of pivot
     std::swap(arr[high], arr[i+1]);
-    return  i + 1;
+    return i + 1;
 }
 
 /**
@@ -35,12 +34,13 @@ static size_t Partition(std::vector<size_t> & arr, const size_t & low, const siz
  * @param low - lowest index 
  * @param high - highest index
  */
-void QuickSort(std::vector <size_t> & arr, const size_t & low, const size_t & high) {
+void QuickSort(std::vector <size_t> & arr, const int64_t & low, const int64_t & high) {
     if (low < high) {
-        size_t p = Partition(arr, low, high);
+        int64_t p = Partition(arr, low, high);
+        std::cout << p << std::endl;
         //This is supposed to be log(n) operation
         QuickSort(arr, low, p - 1);
-        QuickSort(arr, p + 1, high );
+        QuickSort(arr, p + 1, high);
     }
 }
 
@@ -50,16 +50,16 @@ void QuickSort(std::vector <size_t> & arr, const size_t & low, const size_t & hi
  * @param low
  * @param high
  */
-void QuickSortIterative(std::vector<size_t>& arr, const size_t& low, const size_t& high) {
-    std::stack<std::pair<size_t, size_t > > rangeStack;
+void QuickSortIterative(std::vector<size_t>& arr, const int64_t & low, const int64_t & high) {
+    std::stack<std::pair<int64_t, int64_t > > rangeStack;
     rangeStack.push(std::make_pair(low, high));
     
     while (!rangeStack.empty()) {
-        size_t start = rangeStack.top().first;
-        size_t end = rangeStack.top().second;
+        int64_t start = rangeStack.top().first;
+        int64_t end = rangeStack.top().second;
         rangeStack.pop();
         // find the pivot
-        size_t p = Partition(arr, start, end);
+        int64_t p = Partition(arr, start, end);
         if (p - 1 > start) rangeStack.push(std::make_pair(start, p - 1));
         if (end > p + 1) rangeStack.push(std::make_pair(p + 1, end));
     }
