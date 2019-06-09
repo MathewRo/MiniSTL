@@ -15,4 +15,15 @@ script:
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
     - cmake .. && make -j4
+    - ../bin/sort 3
+    - ../bin/sort 5
+    - ../bin/sort 10
+    - ../bin/sort 20
+    - ../bin/sort 50
+    - ../bin/sort 100
+    - ../bin/sort 150
+    - ../bin/sort 500
+    - ../bin/sort 1000
+    - ../bin/sort 5000
+    - ../bin/sort 10000
 
