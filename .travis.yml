@@ -26,4 +26,5 @@ script:
     - ../bin/sort 1000
     - ../bin/sort 5000
     - ../bin/sort 10000
+    - ../bin/bubbletest
 

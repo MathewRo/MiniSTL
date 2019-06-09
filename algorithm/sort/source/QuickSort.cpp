@@ -1,7 +1,6 @@
 #include <algorithm>
 #include "QuickSort.hpp"
 #include <stack>
-#include <iostream>
 /**
  *  Helper partition function
  * @param arr
@@ -37,7 +36,6 @@ static size_t Partition(std::vector<size_t> & arr, const int64_t & low, const in
 void QuickSort(std::vector <size_t> & arr, const int64_t & low, const int64_t & high) {
     if (low < high) {
         int64_t p = Partition(arr, low, high);
-        std::cout << p << std::endl;
         //This is supposed to be log(n) operation
         QuickSort(arr, low, p - 1);
         QuickSort(arr, p + 1, high);
