@@ -5,7 +5,21 @@ message(STATUS "Runtime path is " ${RUNTIME_PATH})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -rdynamic -ggdb -Wall")
 
+# Locate GTest
+set(GTEST_ROOT "/usr/src/gtest" CACHE PATH "path to gtest") 
+find_package(GTest REQUIRED)
+if (NOT GTest_FOUND)
+    message(FATAL_ERROR "Cannot find Google Test Framework!")
+endif()
 
+include_directories(${GTEST_INCLUDE_DIRS})
+add_executable(bubbletest 
+        ${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp
+        ${RUNTIME_PATH}/algorithm/sort/tests/BubbleSortTest.cpp
+        )
+target_link_libraries(bubbletest ${GTEST_LIBRARIES} pthread)
+
+# For the library
 include_directories(
 	${RUNTIME_PATH}/algorithm/sort/includes
         ${RUNTIME_PATH}/utils/includes
