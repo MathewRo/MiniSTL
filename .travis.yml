@@ -8,6 +8,9 @@ addons:
     packages:
       - gcc-6
       - g++-6
+      
+before_install:
+  - pip install --user cpp-coveralls
 
 before_script: cd algorithm/sort/build
 script:
@@ -28,3 +31,5 @@ script:
     - ../bin/sort 10000
     - ../bin/bubbletest
 
+after_success:
+    - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
