@@ -7,11 +7,11 @@
  * 
  */
 void BubbleSort(std::vector <size_t> & arr) {
-	size_t N = arr.size();
+	int64_t N = arr.size();
 
-	for (size_t i = 0; i < N-1; i++ ) {
+	for (int64_t i = 0; i < N-1; i++ ) {
 		bool swapFlag = false;
-		for (size_t j = 0; j < N-1-i; j++) {
+		for (int64_t j = 0; j < N-1-i; j++) {
 			if (arr[j] > arr[j + 1]) {
 				std::swap(arr[j], arr[j+1]);
 				swapFlag = true;
