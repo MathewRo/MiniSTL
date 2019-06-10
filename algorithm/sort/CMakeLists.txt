@@ -10,12 +10,20 @@ include(${RUNTIME_PATH}/gtest.cmake)
 # GTest needs threading support
 find_package (Threads)
 
+SET(COVERAGE OFF CACHE BOOL "Coverage")
+
 add_executable(bubbletest 
         ${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp
         ${RUNTIME_PATH}/algorithm/sort/tests/BubbleSortTest.cpp
         )
 
 target_link_libraries(bubbletest gtest ${CMAKE_THREAD_LIBS_INIT})
+if (COVERAGE)
+    target_compile_options(bubbletest PRIVATE --coverage)
+    target_link_libraries(bubbletest PRIVATE --coverage)
+endif()
+
+
 
 # For the library
 include_directories(
@@ -50,3 +58,5 @@ add_executable(sort
 set(EXECUTABLE_OUTPUT_PATH  ../bin/)
 target_link_libraries(sort mSort)
 
+
+ 
