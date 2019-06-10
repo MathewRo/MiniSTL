@@ -1,6 +1,8 @@
 dist: trusty
 language: cpp
 compiler: gcc
+before_install:
+     sudo apt-get install libgtest-dev
 addons:
   apt:
     sources:

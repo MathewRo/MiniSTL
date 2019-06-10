@@ -17,6 +17,7 @@ add_executable(bubbletest
         ${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp
         ${RUNTIME_PATH}/algorithm/sort/tests/BubbleSortTest.cpp
         )
+
 target_link_libraries(bubbletest ${GTEST_LIBRARIES} pthread)
 
 # For the library
