@@ -5,7 +5,7 @@
 #include "MergeSort.hpp"
 #include "PrintUtil.hpp"
 #include "HeapSort.hpp"
-
+#include "PrintUtil.hpp"
 #include <vector>
 #include <stdexcept>
 #include <gtest/gtest.h>
@@ -70,7 +70,8 @@ TEST(InsertionSortTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
+            
 }
 
 /**
@@ -101,7 +102,7 @@ TEST(SelectionSortTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 /**
@@ -132,7 +133,7 @@ TEST(MergeSortTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 /**
@@ -163,7 +164,7 @@ TEST(MergeSortIterativeTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 /**
@@ -194,7 +195,7 @@ TEST(QuickSortTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 /**
@@ -226,7 +227,7 @@ TEST(QuickSortIterativeTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 /**
@@ -258,7 +259,7 @@ TEST(HeapSortTest, Correctness) {
                     56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,
                     71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,
                     86,87,88,89,90,91,92,93,94,95,96,97,98,99,100};
-                    ASSERT_EQ(0, arr == res);
+                    ASSERT_EQ(1, arr == res);
 }
 
 int main(int argc, char **argv) 

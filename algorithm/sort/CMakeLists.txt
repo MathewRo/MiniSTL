@@ -19,7 +19,9 @@ add_executable(sort_ut
         ${RUNTIME_PATH}/algorithm/sort/source/QuickSort.cpp 
         ${RUNTIME_PATH}/algorithm/sort/source/MergeSort.cpp 
         ${RUNTIME_PATH}/algorithm/sort/source/HeapSort.cpp 
+        ${RUNTIME_PATH}/utils/source/PrintUtil.cpp        
         ${RUNTIME_PATH}/algorithm/sort/tests/Sort_UnitTest.cpp
+        
         )
 
 target_link_libraries(sort_ut PRIVATE gtest ${CMAKE_THREAD_LIBS_INIT})
