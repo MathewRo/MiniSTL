@@ -8,8 +8,7 @@
  * @param high
  * @return 
  */
-static size_t Partition(std::vector<size_t> & arr, const int64_t & low, const int64_t & high) {
-    
+static int64_t Partition(std::vector<size_t> & arr, const int64_t & low, const int64_t & high) {
     int64_t i = low - 1;
     size_t pivot = arr[high];
     // This loop ensures that all the elements to 
@@ -49,6 +48,7 @@ void QuickSort(std::vector <size_t> & arr, const int64_t & low, const int64_t & 
  * @param high
  */
 void QuickSortIterative(std::vector<size_t>& arr, const int64_t & low, const int64_t & high) {
+    if (arr.size() == 0) return;
     std::stack<std::pair<int64_t, int64_t > > rangeStack;
     rangeStack.push(std::make_pair(low, high));
     

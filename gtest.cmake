@@ -1,5 +1,5 @@
 set(GOOGLETEST_ROOT gtest/googletest CACHE STRING "Google Test source root")
-message("CMAKE_CURRENT_LIST_DIR is" ${CMAKE_CURRENT_LIST_DIR})
+message("CMAKE_CURRENT_LIST_DIR is " ${CMAKE_CURRENT_LIST_DIR})
 include_directories(SYSTEM
     ${CMAKE_CURRENT_LIST_DIR}/${GOOGLETEST_ROOT}
     ${CMAKE_CURRENT_LIST_DIR}/${GOOGLETEST_ROOT}/include
