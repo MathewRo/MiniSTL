@@ -9,11 +9,11 @@
  * 
  */
 void SelectionSort(std::vector<size_t>& arr) {
-    size_t N = arr.size();
-    size_t min;
-    for (size_t i = 0; i < N-1; i++) {
+    int64_t N = arr.size();
+    int64_t min;
+    for (int64_t i = 0; i < N-1; i++) {
         min = i;
-        for (size_t j = i+1; j < N; j++) {
+        for (int64_t j = i+1; j < N; j++) {
             if (arr[j] < arr[min]) {
                 min = j;
             }

@@ -10,25 +10,25 @@
  * @param low
  * @param high
  */
-static void Merge(std::vector <size_t> & arr, const size_t &low, const size_t &mid, const size_t &high) {
-    size_t N1 = mid + 1 - low;
-    size_t N2 = high - mid;
+static void Merge(std::vector <size_t> & arr, const int64_t &low, const int64_t &mid, const int64_t &high) {
+    int64_t N1 = mid + 1 - low;
+    int64_t N2 = high - mid;
     // We need to copy the data to temp left and right arrays before merging.
     // Merge is not an in place algorithm
-    size_t L[N1], R[N2];
+    int64_t L[N1], R[N2];
     // O(N1)
-    for (size_t i = 0; i < N1; i++) {
+    for (int64_t i = 0; i < N1; i++) {
         L[i] = arr[i + low]; 
     }
     
     // O(N2)
-    for (size_t i = 0; i < N2; i++) {
+    for (int64_t i = 0; i < N2; i++) {
         R[i] = arr[i + mid + 1];
     }
-    size_t i = 0;
-    size_t j = 0;
+    int64_t i = 0;
+    int64_t j = 0;
     // This should start from low
-    size_t k = low;
+    int64_t k = low;
     // Merge O(N1 + N2)
     while ( i < N1 && j < N2) {
         if (L[i] < R[j]) {
@@ -62,9 +62,9 @@ static void Merge(std::vector <size_t> & arr, const size_t &low, const size_t &m
  * @param low
  * @param high
  */
-void MergeSort(std::vector <size_t> & arr, const size_t & low, const size_t & high) {
+void MergeSort(std::vector <size_t> & arr, const int64_t & low, const int64_t & high) {
     if (high > low) {
-        size_t mid = (low + high)/2;
+        int64_t mid = (low + high)/2;
         MergeSort(arr, low, mid);
         MergeSort(arr, mid + 1, high);
         // this is called approx log(n) times
@@ -78,12 +78,12 @@ void MergeSort(std::vector <size_t> & arr, const size_t & low, const size_t & hi
  * @param low
  * @param high
  */
-void MergeSortIterative(std::vector <size_t> & arr, const size_t & low, const size_t & high) {
+void MergeSortIterative(std::vector <size_t> & arr, const int64_t & low, const int64_t & high) {
     
-    for (size_t i = 1; i <= (high - low); i *= 2) {
-        for (size_t left_end = 0; left_end < (high - low); left_end += 2*i) {
-            size_t mid = std::min(left_end + i - 1, high - low);
-            size_t right_end = std::min (left_end + 2*i - 1, high - low);
+    for (int64_t i = 1; i <= (high - low); i *= 2) {
+        for (int64_t left_end = 0; left_end < (high - low); left_end += 2*i) {
+            int64_t mid = std::min(left_end + i - 1, high - low);
+            int64_t right_end = std::min (left_end + 2*i - 1, high - low);
             // this is called approx log(n) times
             Merge(arr, left_end, mid, right_end);
         }
