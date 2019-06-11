@@ -13,26 +13,14 @@ before_install:
   - pip install --user cpp-coveralls
 
 before_script:
-    - ROOT_DIR=`pwd`
     - cd algorithm/sort/build
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
     - cmake -DCOVERAGE=1 .. && make -j4
-    - ../bin/sort 3
-    - ../bin/sort 5
-    - ../bin/sort 10
-    - ../bin/sort 20
-    - ../bin/sort 50
-    - ../bin/sort 100
-    - ../bin/sort 150
-    - ../bin/sort 500
-    - ../bin/sort 1000
-    - ../bin/sort 5000
-    - ../bin/sort 10000
     - ../bin/sort_ut
-    - cd $(ROOT_DIR)
-
+    
 after_success:
+    - cd $(git rev-parse --show-toplevel)
     - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
