@@ -17,7 +17,7 @@ script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - cmake .. && make -j4
+    - cmake -DCOVERAGE=1 .. && make -j4
     - ../bin/sort 3
     - ../bin/sort 5
     - ../bin/sort 10
