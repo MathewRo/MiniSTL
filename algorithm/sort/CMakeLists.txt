@@ -22,7 +22,7 @@ add_executable(sort_ut
         ${RUNTIME_PATH}/algorithm/sort/tests/Sort_UnitTest.cpp
         )
 
-target_link_libraries(sort_ut gtest ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(sort_ut PRIVATE gtest ${CMAKE_THREAD_LIBS_INIT})
 if (COVERAGE)
     target_compile_options(sort_ut PRIVATE --coverage)
     target_link_libraries(sort_ut PRIVATE --coverage)

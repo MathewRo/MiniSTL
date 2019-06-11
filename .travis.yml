@@ -12,7 +12,9 @@ addons:
 before_install:
   - pip install --user cpp-coveralls
 
-before_script: cd algorithm/sort/build
+before_script:
+    - ROOT_DIR=`pwd`
+    - cd algorithm/sort/build
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
@@ -30,6 +32,7 @@ script:
     - ../bin/sort 5000
     - ../bin/sort 10000
     - ../bin/sort_ut
+    - cd $(ROOT_DIR)
 
 after_success:
     - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
