@@ -29,7 +29,7 @@ script:
     - ../bin/sort 1000
     - ../bin/sort 5000
     - ../bin/sort 10000
-    - ../bin/bubbletest
+    - ../bin/sort_ut
 
 after_success:
     - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
