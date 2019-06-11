@@ -21,6 +21,6 @@ script:
     - cmake -DCOVERAGE=1 .. && make -j4
     - ../bin/sort_ut
     
-after_success:
+after_script:
     - cd $(git rev-parse --show-toplevel)
     - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
