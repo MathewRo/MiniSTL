@@ -1,6 +1,7 @@
 #include "BubbleSort.hpp"
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 /**
  * Bubble Sort Implementation O(n^2)
  * @param arr

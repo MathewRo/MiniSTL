@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 
 get_filename_component(RUNTIME_PATH  ../../ ABSOLUTE)
 message(STATUS "Runtime path is " ${RUNTIME_PATH})
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -rdynamic -ggdb -Wall")
+set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=gnu++0x -rdynamic -ggdb -Wall")
 
 include(${RUNTIME_PATH}/gtest.cmake)
 
 # GTest needs threading support
 find_package (Threads)
 
-SET(COVERAGE OFF CACHE BOOL "Coverage")
+set(COVERAGE OFF CACHE BOOL "Coverage")
 
 add_executable(sort_ut 
 	${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp 
@@ -49,8 +49,8 @@ add_library(mSort SHARED
         )
 
 set_target_properties(mSort PROPERTIES VERSION 1.0)
-set_target_properties(mSort PROPERTIES
-         LIBRARY_OUTPUT_DIRECTORY ../libraries/)
+set_target_properties(mSort PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin/)
+
 set_target_properties(mSort PROPERTIES PUBLIC_HEADER ${RUNTIME_PATH}
         )
 
