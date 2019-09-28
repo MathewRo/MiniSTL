@@ -2,8 +2,9 @@
 #define HEAPSORT_HPP
 #include <cstddef>
 #include <vector>
+#include <Common.hpp>
 
-void HeapSort(std::vector<size_t> & arr);
+EXPORT_API void HeapSort(std::vector<size_t> & arr);
 
 #endif /* HEAPSORT_HPP */
 

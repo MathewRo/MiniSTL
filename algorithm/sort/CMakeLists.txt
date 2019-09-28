@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 get_filename_component(RUNTIME_PATH  ../../ ABSOLUTE)
 message(STATUS "Runtime path is " ${RUNTIME_PATH})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -rdynamic -ggdb -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=gnu++0x -rdynamic -ggdb -Wall")
 
 include(${RUNTIME_PATH}/gtest.cmake)
 
@@ -11,26 +11,6 @@ include(${RUNTIME_PATH}/gtest.cmake)
 find_package (Threads)
 
 SET(COVERAGE OFF CACHE BOOL "Coverage")
-
-add_executable(sort_ut 
-	${RUNTIME_PATH}/algorithm/sort/source/BubbleSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/SelectionSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/InsertionSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/QuickSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/MergeSort.cpp 
-        ${RUNTIME_PATH}/algorithm/sort/source/HeapSort.cpp 
-        ${RUNTIME_PATH}/utils/source/PrintUtil.cpp        
-        ${RUNTIME_PATH}/algorithm/sort/tests/Sort_UnitTest.cpp
-        
-        )
-
-target_link_libraries(sort_ut PRIVATE gtest ${CMAKE_THREAD_LIBS_INIT})
-if (COVERAGE)
-    target_compile_options(sort_ut PRIVATE --coverage)
-    target_link_libraries(sort_ut PRIVATE --coverage)
-endif()
-
-
 
 # For the library
 include_directories(
@@ -55,6 +35,20 @@ set_target_properties(mSort PROPERTIES
 set_target_properties(mSort PROPERTIES PUBLIC_HEADER ${RUNTIME_PATH}
         )
 
+# For UT
+add_executable(sort_ut 
+        ${RUNTIME_PATH}/algorithm/sort/tests/Sort_UnitTest.cpp        
+        )
+
+target_link_libraries(sort_ut PRIVATE gtest ${CMAKE_THREAD_LIBS_INIT} mSort)
+if (COVERAGE)
+    target_compile_options(sort_ut PRIVATE --coverage)
+    target_link_libraries(sort_ut PRIVATE --coverage)
+endif()
+
+
+
+#For executable 
 link_directories(	
 	${RUNTIME_PATH}/algorithm/sort/libraries
         ${RUNTIME_PATH}/utils/libraries
@@ -66,5 +60,8 @@ add_executable(sort
 set(EXECUTABLE_OUTPUT_PATH  ../bin/)
 target_link_libraries(sort mSort)
 
-
+#This is for windows 
+add_custom_command(TARGET sort 
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${RUNTIME_PATH}/algorithm/sort/libraries" $<TARGET_FILE_DIR:sort> )
  

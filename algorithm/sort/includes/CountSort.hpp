@@ -3,8 +3,10 @@
 #include <vector>
 #include <cstdint>
 #include <cstddef>
+#include <Common.hpp>
 
-void CountSort(std::vector <size_t> & arr);
+
+EXPORT_API void CountSort(std::vector <size_t> & arr);
 
 #endif /* COUNTSORT_HPP */
 

@@ -1,6 +1,7 @@
 #include "CountSort.hpp"
 #include <algorithm>
 #include <stdint.h>
+#include <string>
 
 /**
  * This method takes O(n+k) auxillary space

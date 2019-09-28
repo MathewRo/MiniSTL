@@ -1,12 +1,13 @@
 #include "BubbleSort.hpp"
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 /**
  * Bubble Sort Implementation O(n^2)
  * @param arr
  * 
  */
-void BubbleSort(std::vector <size_t> & arr) {
+ void BubbleSort(std::vector <size_t> & arr) {
 	int64_t N = arr.size();
 
 	for (int64_t i = 0; i < N-1; i++ ) {
