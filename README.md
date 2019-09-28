@@ -4,7 +4,7 @@
 
 ## Building
 ```bash 
-cd algorithms/sort/build
+cd algorithm/sort/build
 cmake -- && make
 ```
 To run the executable, use
