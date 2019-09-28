@@ -2,8 +2,9 @@
 #define INSERTIONSORT_HPP
 #include <cstddef>
 #include <vector>
+#include <Common.hpp>
 
-void InsertionSort(std::vector <size_t > & arr);
+EXPORT_API void InsertionSort(std::vector <size_t > & arr);
 
 #endif /* INSERTIONSORT_HPP */
 

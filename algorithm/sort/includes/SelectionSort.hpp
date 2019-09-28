@@ -3,7 +3,9 @@
 #include <vector>
 #include <cstddef>
 #include <cstdint>
-void SelectionSort(std::vector <size_t> & arr);
+#include <Common.hpp>
+
+EXPORT_API void SelectionSort(std::vector <size_t> & arr);
 
 #endif /* SELECTIONSORT_HPP */
 

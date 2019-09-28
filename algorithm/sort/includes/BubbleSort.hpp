@@ -2,6 +2,7 @@
 #define BUBBLESORT_HPP
 #include <cstddef>
 #include <vector>
+#include <Common.hpp>
 
-void BubbleSort(std::vector <size_t> & arr);
+EXPORT_API void BubbleSort(std::vector <size_t> & arr);
 #endif

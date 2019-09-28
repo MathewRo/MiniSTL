@@ -13,6 +13,7 @@
 #include "MergeSort.hpp"
 #include "PrintUtil.hpp"
 #include "HeapSort.hpp"
+#include "CountSort.hpp"
 
 #define ERROR 1
 #define SUCCESS 0
@@ -37,7 +38,7 @@ int main(int argc, char ** argv) {
     srand(time(NULL));
     
     for (size_t i = 0; i < N; i++) {
-        array.push_back(rand()%INT_MAX);
+        array.push_back(rand()%100);
     }
     std::vector<size_t> arr_cpy(array);
 #if 1	
@@ -121,6 +122,19 @@ int main(int argc, char ** argv) {
 	std::cout << "HeapSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
     }
 
+    array = arr_cpy;
+    {
+	PrintArray(array);
+        auto startTime = std::chrono::high_resolution_clock::now();
+        try {
+	CountSort(array);
+        } catch (std::string s) {
+            std::cerr << s << std::endl;
+        }
+        auto stopTime = std::chrono::high_resolution_clock::now();
+	PrintArray(array);
+	std::cout << "CountSort - elapsed time : " << PrintTime(startTime, stopTime) <<std::endl; 
+    }
     
     return SUCCESS;
 }
