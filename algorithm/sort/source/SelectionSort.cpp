@@ -18,6 +18,7 @@ void SelectionSort(std::vector<size_t>& arr) {
                 min = j;
             }
         }
+	if (min == i) break;
         std::swap(arr[min], arr[i]);
     }
 }
