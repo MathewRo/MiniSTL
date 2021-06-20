@@ -1,57 +1,14 @@
 #ifndef ARRAY_HPP
 #define ARRAY_HPP
 
-
-/* This class would hold a user defined array type */
-
-/*
-   operator[]
-
-   Access element (public member function )
-
-   at
-
-   Access element (public member function )
-
-   front
-
-   Access first element (public member function )
-
-   back
-
-   Access last element (public member function )
-
-   data
-
-   Get pointer to data (public member function )
-
-   value_type  The first template parameter (T)  
-
-   reference value_type& 
-
-   const_reference const value_type& 
-
-   pointer value_type* 
-
-   const_pointer const value_type* 
-
-   iterator  a random access iterator to value_type  convertible to const_iterator
-
-   const_iterator  a random access iterator to const value_type  
-
-   reverse_iterator  reverse_iterator<iterator>  
-
-   const_reverse_iterator  reverse_iterator<const_iterator>  
-
-   size_type size_t  unsigned integral type
-
-   difference_type ptrdiff_t signed integral type
-
- */
+#include <stddef.h>
+#include <stdbool.h>
+#include <initializer_list>
+#include <algorithm>
 
 namespace miniSTL {
 
-  template <typename T, size_t sz>
+  template <typename T, size_t _size>
     class array {
       public:
 
@@ -60,38 +17,109 @@ namespace miniSTL {
         typedef value_type*             pointer;
         typedef const pointer           const_pointer;
         typedef value_type&             reference;
-        typedef const referece          const_reference;
-        typedef pointer                 iterator;
+        typedef const reference         const_reference;
+        typedef value_type*             iterator;
         typedef const iterator          const_iterator;
-        typedef iterator                reverse_iterator;
+        typedef value_type*             reverse_iterator;
         typedef const reverse_iterator  const_reverse_iterator;
+        typedef size_t                  size_type;
 
         /* public interfaces */
-        array() {
-          size = sz;
-        }
-
-        array(const T value) {
-          size = sz;
-          for (int i = 0; i < size; i++) {
-            buffer[i] = value;
+        /* we are not adding anything specifc for zero sized arrays.
+           Please understand that, for _size == 0, behavior is undefined,
+            though it may work without any crashes */
+        /* Modifiers */
+        void fill(const value_type& val) {
+          for (int i = 0; i < _size; i++) {
+            buffer[i] = val;
           }
         }
 
-        reference at(size_t n);
-        const_reference at(size_t n) const;
-        reference front();
-        const_reference front();
-        reference back();
-        const_reference back();
-        pointer data() noexcept;
-        const_pointer data() const noexcept;
+        void swap (array& x) noexcept {
+          /* This function should not throw exceptions */
+          for (int i = 0; i < (_size < x.size()?_size:x.size()); i++) {
+            buffer[i] = x[i];
+          }
+        }
 
-      private:
-      
-        T buffer[sz>0?sz:1];
-        size_t size;
-    }
+        /* Element access */
+        reference at(size_t n) {
+          return buffer[n];
+        }
+
+        const_reference at(size_t n) const {
+          return buffer[n];
+        }
+
+        reference operator[](size_t n) {
+          return buffer[n];
+        }
+
+        const_reference operator[](size_t n) const {
+          return buffer[n]; 
+        }
+
+        reference front() {
+          return buffer[0];
+        }
+
+        const_reference front() const{
+          return buffer[0];
+        }
+
+        reference back() {
+           return buffer[_size-1];
+        }
+
+        const_reference back() const{
+            return buffer[_size-1];
+        }
+
+        value_type* data() noexcept {
+          return (pointer)&buffer[0];
+        }
+
+        const value_type* data() const noexcept {
+          return (const_pointer)&buffer[0]; 
+        }
+
+        /* capacity */
+        constexpr size_type size() noexcept {
+          return _size;
+        }
+
+        constexpr size_type max_size() noexcept {
+          return _size;
+        }
+
+        constexpr bool empty() noexcept{
+          return _size == 0;
+        }
+
+        /* iterators */
+        iterator begin() noexcept{
+          return &buffer[0];
+        }
+
+        const_iterator cbegin() const noexcept{
+          return &buffer[0];
+        }
+
+        iterator end() noexcept{
+          return &buffer[_size];
+        }
+
+        const_iterator cend() const noexcept{
+          return &buffer[_size];
+        }
+
+      /* arrays are typincally defined as aggregates in STL. Refer spec to understand more */   
+      T buffer[_size];
+    };
+  
+
 }
+
+
 #endif /* ARRAY_HPP */
 
