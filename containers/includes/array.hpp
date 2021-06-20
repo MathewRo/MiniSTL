@@ -26,8 +26,9 @@ namespace miniSTL {
 
         /* public interfaces */
         /* we are not adding anything specifc for zero sized arrays.
-           Please understand that, for _size == 0, behavior is undefined,
-            though it may work without any crashes */
+           Please understand that for _size == 0, behavior is undefined,
+           though it may work without any crash */
+
         /* Modifiers */
         void fill(const value_type& val) {
           for (int i = 0; i < _size; i++) {
@@ -68,11 +69,11 @@ namespace miniSTL {
         }
 
         reference back() {
-           return buffer[_size-1];
+          return buffer[_size-1];
         }
 
         const_reference back() const{
-            return buffer[_size-1];
+          return buffer[_size-1];
         }
 
         value_type* data() noexcept {
@@ -84,21 +85,25 @@ namespace miniSTL {
         }
 
         /* capacity */
-        constexpr size_type size() noexcept {
+        constexpr size_type size() const noexcept {
           return _size;
         }
 
-        constexpr size_type max_size() noexcept {
+        constexpr size_type max_size() const noexcept {
           return _size;
         }
 
-        constexpr bool empty() noexcept{
+        constexpr bool empty() const noexcept{
           return _size == 0;
         }
 
         /* iterators */
         iterator begin() noexcept{
           return &buffer[0];
+        }
+
+        const_iterator begin() const noexcept{
+          return (const_iterator)&buffer[0];
         }
 
         const_iterator cbegin() const noexcept{
@@ -109,15 +114,49 @@ namespace miniSTL {
           return &buffer[_size];
         }
 
+        const_iterator end() const noexcept{
+          return (const_iterator)&buffer[_size];
+        }
+
         const_iterator cend() const noexcept{
           return &buffer[_size];
         }
 
-      /* arrays are typincally defined as aggregates in STL. Refer spec to understand more */   
-      T buffer[_size];
+        /* array is typincally defined as an aggregates in STL. Refer spec to understand more */   
+        T buffer[_size];
     };
-  
 
+
+  /* Relational operator implementation */
+  template <class T, size_t N>
+    bool operator== ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return (lhs.size() == rhs.size() && 
+          std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+    }
+
+  template <class T, size_t N>
+    bool operator!= ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return !(lhs == rhs);
+    }	
+
+  template <class T, size_t N>
+    bool operator<  ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }	
+
+  template <class T, size_t N>
+    bool operator> ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return (rhs < lhs);
+    }
+  template <class T, size_t N>
+    bool operator<= ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return !(rhs < lhs);
+    }
+
+  template <class T, size_t N>
+    bool operator>= ( const array<T,N>& lhs, const array<T,N>& rhs ) {
+      return !(lhs < rhs);
+    }
 }
 
 
