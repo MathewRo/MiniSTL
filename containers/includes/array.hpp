@@ -32,8 +32,8 @@ namespace miniSTL {
         /* Modifiers */
         void fill(const value_type& val) 
         {
-          for (int i = 0; i < _size; i++) 
-          {
+          for (size_type i = 0; i < _size; i++) {
+          
             buffer[i] = val;
           }
         }
@@ -41,29 +41,29 @@ namespace miniSTL {
         void swap (array& x) noexcept 
         {
           /* This function should not throw exceptions */
-          for (int i = 0; i < (_size < x.size()?_size:x.size()); i++) 
+          for (size_type i = 0; i < (_size < x.size()?_size:x.size()); i++) 
           {
             buffer[i] = x[i];
           }
         }
 
         /* Element access */
-        reference at(size_t n) 
+        reference at(size_type n)
         {
           return buffer[n];
         }
 
-        const_reference at(size_t n) const 
+        const_reference at(size_type n) const 
         {
           return buffer[n];
         }
 
-        reference operator[](size_t n) 
+        reference operator[](size_type n) 
         {
           return buffer[n];
         }
 
-        const_reference operator[](size_t n) const 
+        const_reference operator[](size_type n) const 
         {
           return buffer[n]; 
         }
@@ -93,7 +93,7 @@ namespace miniSTL {
           return (pointer)&buffer[0];
         }
 
-        const value_type* data() const noexcept 
+        const value_type* data() const noexcept
         {
           return (const_pointer)&buffer[0]; 
         }

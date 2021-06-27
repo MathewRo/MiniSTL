@@ -39,7 +39,7 @@ int main() {
     print2(*iter, hex_once(iter));
   }
   nl();
-  for (int i = 0; i < arr.size(); i++ ) {
+  for (size_t i = 0; i < arr.size(); i++ ) {
     print2(arr[i], &arr[i]);
   }
   nl();
