@@ -2,10 +2,15 @@
 #include "list.hpp"
 
 int main() {
-	miniSTL::list<int> mylist;
-
+	miniSTL::list<int> l1;
+  miniSTL::list<char> l2(5);
+  miniSTL::list<int> l3(10, 5);
+  miniSTL::list<int> l4(l3.begin(), l3.end());
+  miniSTL::list<int> l5(l4);
+  miniSTL::list<int> l6(std::move(l3));
+  miniSTL::list<int> l7 = {1,2,3,4,5,6,7};
 	/* print the address of the object */
-	print1(hex_once(&mylist));
+	print1(hex_once(&l1));
 #if 0
 	/* insert few elements at the end */
 	mylist.push_back(1);
