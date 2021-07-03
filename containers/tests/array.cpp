@@ -1,19 +1,30 @@
-#include "array.hpp"
 #include "common.hpp"
+
+#ifdef __STD__
+#include <array>
+#pragma message("compiling arrays for std lib!")
+using namespace std;
+#else 
+#include "array.hpp"
+using namespace miniSTL;
+#endif
+
 
 /* Test code for arrays */
 int main() {
-  miniSTL::array<int, 8> arr = {1,2,3,4,5,6,7,8};
+  array<int, 8> arr = {1,2,3,4,5,6,7,8};
 
   /*support for zero size array **/
-  miniSTL::array<int, 0> zero_arr;
+  array<int, 0> zero_arr;
   print1(zero_arr.size());
   for (auto & el: zero_arr) {
     print1(el);
   }
   print1(hex_once(zero_arr.data()));
   print1(zero_arr.max_size());
+#ifndef __STD__
   print1(zero_arr.front());
+#endif
   nl();  
 
   /* address of the object in memory */	
@@ -53,9 +64,9 @@ int main() {
     print1("some random exception!");
   }
 
-  miniSTL::array<int,5> a = {10, 20, 30, 40, 50};
-  miniSTL::array<int,5> b = {10, 20, 30, 40, 50};
-  miniSTL::array<int,5> c = {50, 40, 30, 20, 10};
+  array<int,5> a = {10, 20, 30, 40, 50};
+  array<int,5> b = {10, 20, 30, 40, 50};
+  array<int,5> c = {50, 40, 30, 20, 10};
 
 
 

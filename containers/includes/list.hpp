@@ -22,7 +22,7 @@ namespace miniSTL {
         using iterator_category = std::input_iterator_tag;
         using difference_type   = std::ptrdiff_t;
         using value_type        = T;
-        using pointer           = T*;  // or also value_type*
+        using pointer           = T*;  
         using reference         = T&; 
         /* postfix */
         iterator operator++(int)
@@ -62,11 +62,6 @@ namespace miniSTL {
           return iter_node->data;
         }
 
-        //        T operator*() 
-        //        {
-        //          return iter_node->data;
-        //        }
-
         private:
         node * iter_node;
       };
@@ -97,15 +92,17 @@ namespace miniSTL {
 
       /* constructors */
       /* default */
-      explicit list() :head(nullptr), 
-      tail(nullptr)
+      explicit list() :
+        head(nullptr), 
+        tail(nullptr)
       {
 
       }
 
       /* fill */
-      explicit list(size_type n): head(nullptr), 
-      tail(nullptr) 
+      explicit list(size_type n) : 
+        head(nullptr), 
+        tail(nullptr) 
       {
         /*Allocate n nodes - don't do any explicit value inits */
         for (size_type i = 0; i < n; i++) 
@@ -114,8 +111,9 @@ namespace miniSTL {
         }
       }
 
-      list(size_type n, const value_type& val): head(nullptr),
-      tail(nullptr)
+      list(size_type n, const value_type& val) : 
+        head(nullptr),
+        tail(nullptr)
       {
         /*Allocate n nodes - don't do any explicit value inits */
         for (size_type i = 0; i < n; i++) 
@@ -275,9 +273,20 @@ namespace miniSTL {
         }
       }
 
+      /* For a double link list - push_front generally updates head*/
       void push_front (const value_type& val) 
       {
-
+        node * cur_node = new node(val);
+        if (head == nullptr) 
+        {
+          head = tail = cur_node;
+        }
+        else 
+        {
+          cur_node->next = head;
+          head->prev = cur_node;
+          head = cur_node;
+        }
       }
 
       void push_front (value_type&& val)
@@ -290,17 +299,38 @@ namespace miniSTL {
 
       }
 
+      /* For a double link list - push_back generally updates tail */
       void push_back (const value_type& val) 
       {
-
+        node * cur_node = new node(val);
+        if (head == nullptr)
+        {
+          head = tail = cur_node;
+        }
+        else 
+        {
+          tail->next = cur_node;
+          cur_node->prev = tail;
+          tail = cur_node;
+        }
       }
 
       void push_back (value_type&& val)
       {
-
+        node * cur_node = new node(val);
+        if (head == nullptr)
+        {
+          head = tail = cur_node;
+        }
+        else 
+        {
+          tail->next = cur_node;
+          cur_node->prev = tail;
+          tail = cur_node;
+        }
       }
 
-      void pop_back() 
+      void pop_back()
       {
 
       }
@@ -363,32 +393,32 @@ namespace miniSTL {
 
       iterator begin() noexcept
       {
-        return head;
+        return iterator(head);
       }
 
       const_iterator begin() const noexcept
       {
-        return (const_iterator)head;
+        return (const_iterator)iterator(head);
       }
 
       const_iterator cbegin() const noexcept
       {
-        return (const_iterator)head;
+        return (const_iterator)iterator(head);
       }
 
       iterator end() noexcept
       {
-        return tail;
+        return iterator(nullptr);
       }
 
       const_iterator end() const noexcept
       {
-        return (const_iterator)tail;
+        return (const_iterator)iterator(nullptr);
       }
 
       const_iterator cend() const noexcept
       {
-        return (const_iterator)tail;
+        return (const_iterator)iterator(nullptr);
       }
 
       private:
@@ -396,12 +426,14 @@ namespace miniSTL {
         T data;
         struct node * next;
         struct node * prev;
-        node() :next(nullptr), prev(nullptr){}
-        node (const T val) :next(nullptr) 
-                            ,prev(nullptr)
-                            ,data(val){}
+        node() :data(T()), 
+        next(nullptr), 
+        prev(nullptr){}
+        node (const T val) :data(val)
+                            ,next(nullptr) 
+                            ,prev(nullptr){}
       };
-      iterator head, tail;
+      node *head, *tail;
     };
 
 }
