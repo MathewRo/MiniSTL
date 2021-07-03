@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-#ifdef __STD__
+#ifdef __STDLIB__
 #include <array>
 #pragma message("compiling arrays for std lib!")
 using namespace std;
@@ -22,7 +22,7 @@ int main() {
   }
   print1(hex_once(zero_arr.data()));
   print1(zero_arr.max_size());
-#ifndef __STD__
+#ifndef __STDLIB__
   print1(zero_arr.front());
 #endif
   nl();  

@@ -18,7 +18,7 @@ namespace miniSTL {
       struct iterator {
         iterator() : iter_node(nullptr) {}
         iterator(node * val) : iter_node(val) {}
-
+        friend class list<T>;
         using iterator_category = std::input_iterator_tag;
         using difference_type   = std::ptrdiff_t;
         using value_type        = T;
@@ -62,7 +62,7 @@ namespace miniSTL {
           return iter_node->data;
         }
 
-        private:
+        private: 
         node * iter_node;
       };
 
@@ -171,7 +171,7 @@ namespace miniSTL {
         /*Do a deep copy */ 
         for (auto &el : x) 
         {
-          push_back(x);
+          push_back(el);
         }
         return *this;  
       }
@@ -182,8 +182,8 @@ namespace miniSTL {
         {
           return *this;
         }
-        //TODO
-        //erase(begin(),end());
+
+        erase(begin(),end());
         head = x.head;
         tail = x.tail;
         x.head = x.tail = nullptr;
@@ -191,6 +191,8 @@ namespace miniSTL {
 
       list& operator= (std::initializer_list<value_type> il) 
       {
+        erase(begin(),end());
+        assign(il.begin(), il.end());
         return *this;
       }
 
@@ -363,11 +365,71 @@ namespace miniSTL {
 
       iterator erase (const_iterator position)
       {
-        return head;
+        node * cur_node = position.iter_node, * prev_node, * next_node;
+        prev_node = cur_node->prev;
+        next_node = cur_node->next;
+        if (prev_node)
+        {
+          prev_node->next = next_node;
+        }
+        else 
+        {
+          /* We are erasing head */
+          head = next_node;
+        }
+        if (next_node)
+        {
+          next_node->prev = prev_node;
+        }
+        else 
+        {
+          /* We are erasing tail*/
+          tail = prev_node;
+        }
+        delete cur_node;
+        return iterator(head);
       }
 
       iterator erase (const_iterator first, const_iterator last)
       {
+
+        node *first_node = first.iter_node, *last_node = last.iter_node,
+             *prev_node = nullptr, *next_node = last_node, *temp_node = nullptr;
+
+        if (empty())
+        {
+          return iterator(head);
+        }
+
+        prev_node = first_node->prev;
+
+        /* clean from first to last [) */
+        while (first_node != last_node)
+        {
+          temp_node = first_node->next;
+          delete first_node;
+          first_node = temp_node;
+        }
+
+        if (prev_node)
+        {
+          prev_node->next = next_node;
+        }
+        else 
+        {
+          /* We are erasing head */
+          head = next_node;
+        }
+        if (next_node)
+        {
+          next_node->prev = prev_node;
+        }
+        else 
+        {
+          /* We are erasing tail*/
+          tail = prev_node;
+        }
+
         return head;
       }
 
@@ -419,6 +481,12 @@ namespace miniSTL {
       const_iterator cend() const noexcept
       {
         return (const_iterator)iterator(nullptr);
+      }
+
+
+      bool empty() const 
+      {
+        return head == nullptr;
       }
 
       private:
