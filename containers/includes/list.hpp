@@ -27,8 +27,9 @@ namespace miniSTL {
         /* postfix */
         iterator operator++(int)
         {
+          node * previous = iter_node;
           iter_node = iter_node->next;
-          return *this;
+          return iterator(previous);
         }
 
         /* prefix */
@@ -41,8 +42,9 @@ namespace miniSTL {
         /* postfix */
         iterator operator--(int) 
         {
+          node * previous = iter_node;
           iter_node = iter_node->prev;
-          return *this;
+          return iterator(previous);
         }
 
         /* prefix */
@@ -55,6 +57,11 @@ namespace miniSTL {
         bool operator!=(const iterator& iter)
         {
           return iter_node != iter.iter_node;
+        }
+
+        bool operator==(const iterator& iter)
+        {
+          return iter_node == iter.iter_node;
         }
 
         T& operator*()
@@ -199,7 +206,6 @@ namespace miniSTL {
 
       /* Element access */
       reference back() {
-        /* this member function can throw if list is empty */
         return (reference)tail->data;
       }
 
@@ -221,26 +227,36 @@ namespace miniSTL {
       template <class InputIterator>
         void assign (InputIterator first, InputIterator last) 
         {
-          iterator temp = head;
-          while (temp != nullptr && first != last) 
+          /* official c++ websites states that existing nodes 
+             are destroyed and new nodes are allocated. Since
+             assign is a single call, we are optimizing by re-
+             using existing nodes and allocating only if there 
+             are more nodes than what already exists */
+          iterator temp(head);
+          while (temp.iter_node != nullptr && first != last) 
           {
-            *temp = *first;
-            first++; temp++;
+            *temp++ = *first++;
           }
-          //TODO - double check the behavior of assign
-          // if we don't have allocated nodes, should 
-          // we push_back or do a seg_fault?
-          while (first != last) 
+
+          if (temp.iter_node != nullptr && first == last)
           {
-            push_back(*first);
-            first++;
+            erase(temp, end());
+          }
+          else if (temp.iter_node == nullptr && first != last)
+          {
+            while (first != last) 
+            {
+              push_back(*first);
+              first++;
+            }
           }
         }
 
       void assign (size_type n, const value_type& val) 
       {
+        std::cout << "size assign called" << std::endl;
         if (!n) return;
-        iterator temp = head;
+        iterator temp(head);
         while (temp != nullptr) 
         {
           *temp = val;

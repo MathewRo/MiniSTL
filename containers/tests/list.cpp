@@ -116,7 +116,28 @@ int main() {
     /* const back/const front */
     const list<int> l2 = {1, 2, 3};
     print1(l2.back());
-    print1(l2.front());
+    print1(l2.front());nl();
+  }
+
+  {
+    /* assign test */
+    print1("assign test");nl();
+    list<int> l1 = {1, 2, 3};
+    list<int> l2;
+    /* General assign to empty list */
+    l2.assign(l1.begin(), l1.end());
+    print_list(l2);nl();
+    list<int> l3 = {4, 5, 6, 7};
+    /* assign to non-empty list with elements > 
+       that of current list */
+    l2.assign(l3.begin(), l3.end());
+    print_list(l2);nl();
+    list<int> l4 = {8, 9};
+    /* assign to non-empty list with elements <
+      that of current list */
+    l2.assign(l4.begin(), l4.end());
+    print_list(l2);nl();
+     
   }
 
 #if 0
