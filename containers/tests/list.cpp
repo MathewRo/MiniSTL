@@ -137,7 +137,18 @@ int main() {
       that of current list */
     l2.assign(l4.begin(), l4.end());
     print_list(l2);nl();
-     
+
+    /* size assign */
+    l2.assign(10, 4);
+    print_list(l2);nl();
+    l2.assign(4, 8);
+    print_list(l2);nl();  
+
+    /* initializer list assign */
+    l2.assign({12, 13, 14, 15, 16, 17, 18});
+    print_list(l2);nl();
+    l2.assign({90, 92, 98});
+    print_list(l2);nl();  
   }
 
 #if 0

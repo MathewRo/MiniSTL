@@ -224,7 +224,7 @@ namespace miniSTL {
         return (const_reference)head->data;
       }
 
-      template <class InputIterator>
+      template <class InputIterator, typename = RequireInputIterator<InputIterator>>
         void assign (InputIterator first, InputIterator last) 
         {
           /* official c++ websites states that existing nodes 
@@ -254,41 +254,47 @@ namespace miniSTL {
 
       void assign (size_type n, const value_type& val) 
       {
-        std::cout << "size assign called" << std::endl;
         if (!n) return;
         iterator temp(head);
-        while (temp != nullptr) 
+        while (temp.iter_node != nullptr && n) 
         {
-          *temp = val;
-          n -= 1; temp++;
+          *temp++ = val;
+          n -= 1; 
         }
-        //TODO - double check the behavior of assign
-        // if we don't have allocated nodes, should 
-        // we push_back or do a seg_fault?
-        while (n) 
+        if (temp.iter_node != nullptr && (n == 0))
         {
-          push_back(val);
-          n -= 1;
+          erase(temp, end());
+        }
+        else if (temp.iter_node == nullptr && (n != 0))
+        {
+          while (n) 
+          {
+            push_back(val);
+            n -= 1;
+          }
         }
       }
 
       void assign (std::initializer_list<value_type> il) 
       {
         if (!il.size()) return;
-        iterator temp = head;
+        iterator temp(head);
         auto il_iter = il.begin();
-        while (temp != nullptr && il_iter != il.end()) 
+        while (temp.iter_node != nullptr && il_iter != il.end()) 
         {
-          *temp = *il_iter;
-          il_iter++; temp++;
+          *temp++ = *il_iter++;
         }
-        //TODO - double check the behavior of assign
-        // if we don't have allocated nodes, should 
-        // we push_back or do a seg_fault?
-        while (il_iter != il.end()) 
+        if (temp.iter_node != nullptr && il_iter == il.end())
         {
-          push_back(*il_iter);
-          il_iter++;
+          erase(temp, end());
+        }
+        else if (temp.iter_node == nullptr && il_iter != il.end())
+        {
+          while (il_iter != il.end()) 
+          {
+            push_back(*il_iter);
+            il_iter++;
+          }
         }
       }
 
