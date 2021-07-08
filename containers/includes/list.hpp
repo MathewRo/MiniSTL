@@ -18,7 +18,7 @@ namespace miniSTL {
       struct iterator {
         iterator() : iter_node(nullptr) {}
         iterator(node * val) : iter_node(val) {}
-
+        friend class list<T>;
         using iterator_category = std::input_iterator_tag;
         using difference_type   = std::ptrdiff_t;
         using value_type        = T;
@@ -27,8 +27,9 @@ namespace miniSTL {
         /* postfix */
         iterator operator++(int)
         {
+          node * previous = iter_node;
           iter_node = iter_node->next;
-          return *this;
+          return iterator(previous);
         }
 
         /* prefix */
@@ -41,8 +42,9 @@ namespace miniSTL {
         /* postfix */
         iterator operator--(int) 
         {
+          node * previous = iter_node;
           iter_node = iter_node->prev;
-          return *this;
+          return iterator(previous);
         }
 
         /* prefix */
@@ -57,12 +59,17 @@ namespace miniSTL {
           return iter_node != iter.iter_node;
         }
 
+        bool operator==(const iterator& iter)
+        {
+          return iter_node == iter.iter_node;
+        }
+
         T& operator*()
         {
           return iter_node->data;
         }
 
-        private:
+        private: 
         node * iter_node;
       };
 
@@ -171,7 +178,7 @@ namespace miniSTL {
         /*Do a deep copy */ 
         for (auto &el : x) 
         {
-          push_back(x);
+          push_back(el);
         }
         return *this;  
       }
@@ -182,94 +189,112 @@ namespace miniSTL {
         {
           return *this;
         }
-        //TODO
-        //erase(begin(),end());
+
+        erase(begin(),end());
         head = x.head;
         tail = x.tail;
         x.head = x.tail = nullptr;
+        return *this;
       }
 
       list& operator= (std::initializer_list<value_type> il) 
       {
+        erase(begin(),end());
+        assign(il.begin(), il.end());
         return *this;
       }
 
       /* Element access */
       reference back() {
-        /* this member function can throw if list is empty */
-        return (reference)*tail;
+        return (reference)tail->data;
       }
 
       const_reference back() const 
       {
-        return (const_reference)*tail;
+        return (const_reference)tail->data;
       }
 
       reference front() 
       {
-        return (reference)*head;
+        return (reference)head->data;
       }
 
       const_reference front() const 
       {
-        return (const_reference)*head;;
+        return (const_reference)head->data;
       }
 
-      template <class InputIterator>
+      template <class InputIterator, typename = RequireInputIterator<InputIterator>>
         void assign (InputIterator first, InputIterator last) 
         {
-          iterator temp = head;
-          while (temp != nullptr && first != last) 
+          /* official c++ websites states that existing nodes 
+             are destroyed and new nodes are allocated. Since
+             assign is a single call, we are optimizing by re-
+             using existing nodes and allocating only if there 
+             are more nodes than what already exists */
+          iterator temp(head);
+          while (temp.iter_node != nullptr && first != last) 
           {
-            *temp = *first;
-            first++; temp++;
+            *temp++ = *first++;
           }
-          //TODO - double check the behavior of assign
-          // if we don't have allocated nodes, should 
-          // we push_back or do a seg_fault?
-          while (first != last) 
+
+          if (temp.iter_node != nullptr && first == last)
           {
-            push_back(*first);
-            first++;
+            erase(temp, end());
+          }
+          else if (temp.iter_node == nullptr && first != last)
+          {
+            while (first != last) 
+            {
+              push_back(*first);
+              first++;
+            }
           }
         }
 
       void assign (size_type n, const value_type& val) 
       {
         if (!n) return;
-        iterator temp = head;
-        while (temp != nullptr) 
+        iterator temp(head);
+        while (temp.iter_node != nullptr && n) 
         {
-          *temp = val;
-          n -= 1; temp++;
+          *temp++ = val;
+          n -= 1; 
         }
-        //TODO - double check the behavior of assign
-        // if we don't have allocated nodes, should 
-        // we push_back or do a seg_fault?
-        while (n) 
+        if (temp.iter_node != nullptr && (n == 0))
         {
-          push_back(val);
-          n -= 1;
+          erase(temp, end());
+        }
+        else if (temp.iter_node == nullptr && (n != 0))
+        {
+          while (n) 
+          {
+            push_back(val);
+            n -= 1;
+          }
         }
       }
 
       void assign (std::initializer_list<value_type> il) 
       {
         if (!il.size()) return;
-        iterator temp = head;
+        iterator temp(head);
         auto il_iter = il.begin();
-        while (temp != nullptr && il_iter != il.end()) 
+        while (temp.iter_node != nullptr && il_iter != il.end()) 
         {
-          *temp = *il_iter;
-          il_iter++; temp++;
+          *temp++ = *il_iter++;
         }
-        //TODO - double check the behavior of assign
-        // if we don't have allocated nodes, should 
-        // we push_back or do a seg_fault?
-        while (il_iter != il.end()) 
+        if (temp.iter_node != nullptr && il_iter == il.end())
         {
-          push_back(*il_iter);
-          il_iter++;
+          erase(temp, end());
+        }
+        else if (temp.iter_node == nullptr && il_iter != il.end())
+        {
+          while (il_iter != il.end()) 
+          {
+            push_back(*il_iter);
+            il_iter++;
+          }
         }
       }
 
@@ -363,11 +388,71 @@ namespace miniSTL {
 
       iterator erase (const_iterator position)
       {
-        return head;
+        node * cur_node = position.iter_node, * prev_node, * next_node;
+        prev_node = cur_node->prev;
+        next_node = cur_node->next;
+        if (prev_node)
+        {
+          prev_node->next = next_node;
+        }
+        else 
+        {
+          /* We are erasing head */
+          head = next_node;
+        }
+        if (next_node)
+        {
+          next_node->prev = prev_node;
+        }
+        else 
+        {
+          /* We are erasing tail*/
+          tail = prev_node;
+        }
+        delete cur_node;
+        return iterator(head);
       }
 
       iterator erase (const_iterator first, const_iterator last)
       {
+
+        node *first_node = first.iter_node, *last_node = last.iter_node,
+             *prev_node = nullptr, *next_node = last_node, *temp_node = nullptr;
+
+        if (empty())
+        {
+          return iterator(head);
+        }
+
+        prev_node = first_node->prev;
+
+        /* clean from first to last [) */
+        while (first_node != last_node)
+        {
+          temp_node = first_node->next;
+          delete first_node;
+          first_node = temp_node;
+        }
+
+        if (prev_node)
+        {
+          prev_node->next = next_node;
+        }
+        else 
+        {
+          /* We are erasing head */
+          head = next_node;
+        }
+        if (next_node)
+        {
+          next_node->prev = prev_node;
+        }
+        else 
+        {
+          /* We are erasing tail*/
+          tail = prev_node;
+        }
+
         return head;
       }
 
@@ -419,6 +504,12 @@ namespace miniSTL {
       const_iterator cend() const noexcept
       {
         return (const_iterator)iterator(nullptr);
+      }
+
+
+      bool empty() const 
+      {
+        return head == nullptr;
       }
 
       private:
