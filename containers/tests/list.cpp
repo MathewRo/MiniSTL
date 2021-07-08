@@ -106,6 +106,18 @@ int main() {
     print_list(l4);nl();
   }
 
+  {
+    /* test front and back */    
+    print1("front/back test");
+    /* back/front operator test*/
+    list<int> l1 = {'a', 'B', 'c', 'd', 'E'};
+    print1(l1.back());
+    print1(l1.front());
+    /* const back/const front */
+    const list<int> l2 = {1, 2, 3};
+    print1(l2.back());
+    print1(l2.front());
+  }
 
 #if 0
   /* insert few elements at the end */

@@ -187,6 +187,7 @@ namespace miniSTL {
         head = x.head;
         tail = x.tail;
         x.head = x.tail = nullptr;
+        return *this;
       }
 
       list& operator= (std::initializer_list<value_type> il) 
@@ -199,22 +200,22 @@ namespace miniSTL {
       /* Element access */
       reference back() {
         /* this member function can throw if list is empty */
-        return (reference)*tail;
+        return (reference)tail->data;
       }
 
       const_reference back() const 
       {
-        return (const_reference)*tail;
+        return (const_reference)tail->data;
       }
 
       reference front() 
       {
-        return (reference)*head;
+        return (reference)head->data;
       }
 
       const_reference front() const 
       {
-        return (const_reference)*head;;
+        return (const_reference)head->data;
       }
 
       template <class InputIterator>
