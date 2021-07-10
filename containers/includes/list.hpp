@@ -138,7 +138,9 @@ namespace miniSTL {
       }
 
       /* copy */
-      list(const list& x):head(nullptr), tail(nullptr)
+      list(const list& x) :
+        head(nullptr), 
+        tail(nullptr)
       {
         /*Do a deep copy */
         for (auto &el : x) 
@@ -155,8 +157,9 @@ namespace miniSTL {
       }
 
       /* initializer list */
-      list(std::initializer_list<value_type> il):
-        head(nullptr),tail(nullptr)
+      list(std::initializer_list<value_type> il) :
+        head(nullptr),
+        tail(nullptr)
       {
         assign(il.begin(), il.end());
       }
@@ -302,62 +305,52 @@ namespace miniSTL {
       void push_front (const value_type& val) 
       {
         node * cur_node = new node(val);
-        if (head == nullptr) 
-        {
-          head = tail = cur_node;
-        }
-        else 
-        {
-          cur_node->next = head;
-          head->prev = cur_node;
-          head = cur_node;
-        }
+        push_front_helper(cur_node);
       }
 
       void push_front (value_type&& val)
       {
-
+        node * cur_node = new node(std::move(val));
+        push_front_helper(cur_node);
       }
 
       void pop_front() 
       {
-
+        if (empty()) return;
+        
+        node * cur_node = head;
+        head = head->next;
+        if (head != nullptr)
+        {
+          head->prev = nullptr;
+        }
+        delete cur_node;
       }
 
       /* For a double link list - push_back generally updates tail */
       void push_back (const value_type& val) 
       {
         node * cur_node = new node(val);
-        if (head == nullptr)
-        {
-          head = tail = cur_node;
-        }
-        else 
-        {
-          tail->next = cur_node;
-          cur_node->prev = tail;
-          tail = cur_node;
-        }
+        push_back_helper(cur_node);
       }
 
       void push_back (value_type&& val)
       {
-        node * cur_node = new node(val);
-        if (head == nullptr)
-        {
-          head = tail = cur_node;
-        }
-        else 
-        {
-          tail->next = cur_node;
-          cur_node->prev = tail;
-          tail = cur_node;
-        }
+        node * cur_node = new node(std::move(val));
+        push_back_helper(cur_node);
       }
 
       void pop_back()
       {
+        if (empty()) return;
 
+        node * cur_node = tail;
+        tail = tail->prev;
+        if (tail != nullptr)
+        {
+          tail->next = nullptr;
+        }
+        delete cur_node;
       }
 
       iterator insert (const_iterator position, const value_type& val) 
@@ -507,12 +500,42 @@ namespace miniSTL {
       }
 
 
-      bool empty() const 
+      inline bool empty() const 
       {
         return head == nullptr;
       }
 
       private:
+
+      void push_front_helper(node * cur_node) 
+      {
+        if (empty())
+        {
+          head = tail = cur_node;
+        }
+        else
+        {
+          cur_node->next = head;
+          head->prev = cur_node;
+          head = cur_node;
+        }
+      }
+
+      void push_back_helper(node * cur_node)
+      {
+        if (empty())
+        {
+          head = tail = cur_node;
+        }
+        else 
+        {
+          tail->next = cur_node;
+          cur_node->prev = tail;
+          tail = cur_node;
+        } 
+      }
+
+      /* list node type */
       struct node {
         T data;
         struct node * next;
@@ -520,9 +543,14 @@ namespace miniSTL {
         node() :data(T()), 
         next(nullptr), 
         prev(nullptr){}
-        node (const T val) :data(val)
-                            ,next(nullptr) 
-                            ,prev(nullptr){}
+        node (const T& val) : 
+          data(T(val)),
+          next(nullptr),
+          prev(nullptr){}
+        node(T&& val) : 
+          data(T(std::move(val))),
+          next(nullptr),
+          prev(nullptr){}
       };
       node *head, *tail;
     };

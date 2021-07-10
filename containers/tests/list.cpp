@@ -25,6 +25,7 @@ int main() {
     list<int> l1;
     print1("l1");
     print1(hex_once(&l1));
+    nl();
   }
   {
     /* size constructor test */
@@ -149,6 +150,27 @@ int main() {
     print_list(l2);nl();
     l2.assign({90, 92, 98});
     print_list(l2);nl();  
+  }
+  {
+    /* push_back/push_front/pop_back/pop_front*/
+    list<int> l1 = {1, 2, 3};
+    print_list(l1);nl();
+    l1.push_front(4);
+    l1.push_back(5);
+    print_list(l1);nl();
+    l1.push_front(l1.front());
+    l1.push_back(l1.back());
+    print_list(l1);nl();
+    l1.pop_back();
+    l1.pop_front();
+    print_list(l1);nl();
+    l1.pop_front();
+    print_list(l1);nl();
+    l1.pop_front();
+    l1.pop_front();
+    l1.pop_front();
+    l1.pop_front();
+    print_list(l1);nl();
   }
 
 #if 0
