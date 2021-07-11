@@ -135,7 +135,7 @@ int main() {
     print_list(l2);nl();
     list<int> l4 = {8, 9};
     /* assign to non-empty list with elements <
-      that of current list */
+       that of current list */
     l2.assign(l4.begin(), l4.end());
     print_list(l2);nl();
 
@@ -170,6 +170,22 @@ int main() {
     l1.pop_front();
     l1.pop_front();
     l1.pop_front();
+    print_list(l1);nl();
+  }
+
+  {
+    /* list insert methods */
+    list<int> l2 = {12, 23, 34, 45};
+    list<int> l1 = {1, 2, 3, 4, 5};
+    auto iter = l1.begin();
+    /* insert before head */
+    iter = l1.insert(iter, 10);
+    print_list(l1);nl();
+    iter = l1.insert(iter, 4, 12);
+    print_list(l1);nl();
+    iter = l1.insert(iter, l2.begin(), l2.end());
+    print_list(l1);nl();
+    iter = l1.insert(iter, {99, 88, 77, 66, 55});
     print_list(l1);nl();
   }
 

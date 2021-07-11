@@ -317,7 +317,7 @@ namespace miniSTL {
       void pop_front() 
       {
         if (empty()) return;
-        
+
         node * cur_node = head;
         head = head->next;
         if (head != nullptr)
@@ -344,7 +344,7 @@ namespace miniSTL {
       {
         if (empty()) return;
 
-        node * cur_node = tail;
+        node *cur_node = tail;
         tail = tail->prev;
         if (tail != nullptr)
         {
@@ -353,31 +353,170 @@ namespace miniSTL {
         delete cur_node;
       }
 
+      /* insert elements before the given iterator */
       iterator insert (const_iterator position, const value_type& val) 
       {
+        std::cout << "in insert 1" << std::endl;
+        node *cur_node = position.iter_node, *prev_node = cur_node->prev;
+        /* we are not handling a bad iterator being passed case */
 
-      }
+        node *new_node = new node(val);
+        if (prev_node)
+        {
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+        }
+        else 
+        {
+          /* we are modifying head */
+          new_node->prev = nullptr;
+          head = new_node;
+        }
+
+        new_node->next = cur_node;
+        cur_node->prev = new_node;
+        return iterator(new_node);
+      } 
 
       iterator insert (const_iterator position, size_type n, const value_type& val)
       {
+        std::cout << "in insert 2" << std::endl;
+        //TODO understand what the behavior would be for this scenario
+        if (!n) return position;
 
+        node *cur_node = position.iter_node, *prev_node = cur_node->prev, 
+             *new_node = nullptr, *ret_node = nullptr;
+
+        new_node = new node(val);
+        if (prev_node)
+        {
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+        }
+        else 
+        {
+          /* we are modifying the head */
+          head = new_node;
+          new_node->prev = nullptr;
+        }
+        prev_node = ret_node = new_node;
+
+        while (n-1) 
+        {
+          new_node = new node(val);
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+          prev_node = new_node;
+          n--;
+        }
+        prev_node->next = cur_node;
+        cur_node->prev = prev_node;
+        return iterator(ret_node);
       }
 
-      template <class InputIterator>
+
+      template <class InputIterator, typename = RequireInputIterator<InputIterator>>
         iterator insert (const_iterator position, InputIterator first, InputIterator last)
         {
-          return head;
+
+          std::cout << "in insert 3" << std::endl;
+          // TODO Understand what would be the behavior here?
+          if (first == last) return position;
+          node *cur_node = position.iter_node, *prev_node = cur_node->prev, 
+               *new_node = nullptr, *ret_node = nullptr;
+
+          new_node = new node(*first++);
+          if (prev_node)
+          {
+            new_node->prev = prev_node;
+            prev_node->next = new_node;
+          }
+          else 
+          {
+            /* we are modifying the head */
+            head = new_node;
+            new_node->prev = nullptr;
+          }
+          prev_node = ret_node = new_node;
+
+          while (first != last) 
+          {
+            new_node = new node(*first++);
+            new_node->prev = prev_node;
+            prev_node->next = new_node;
+            prev_node = new_node;
+          }
+          prev_node->next = cur_node;
+          cur_node->prev = prev_node;
+
+          return iterator(ret_node);
         }
 
       iterator insert (const_iterator position, value_type&& val)
       { 
-        return head;
+        std::cout << "in insert 4" << std::endl;
+
+        node *cur_node = position.iter_node, *prev_node = cur_node->prev;
+        /* we are not handling a bad iterator being passed case */
+
+        node *new_node = new node(std::move(val));
+        if (prev_node)
+        {
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+
+        }
+        else 
+        {
+          /* we are modifying head */
+          new_node->prev = nullptr;
+          head = new_node;
+        }
+        new_node->next = cur_node;
+        cur_node->prev = new_node;
+        return iterator(new_node);
       } 
+
 
       iterator insert (const_iterator position, std::initializer_list<value_type> il)
       {
-        return head;
+        std::cout << "in insert 5" << std::endl;
+        // TODO careful with the approach of copying anything to the stack
+        // as this could mess up the values if the passed object could be 
+        // modified by another thread. Since this API recieves a copy, 
+        // this should be fine for timebeing. Marking this as TODO to 
+        // take care of thread safety and other aspects later on
+        auto il_iter = il.begin(), il_end = il.end();
+        if (il_iter == il_end) return position;
+        node *cur_node = position.iter_node, *prev_node = cur_node->prev, 
+             *new_node = nullptr, *ret_node = nullptr;
+
+        new_node = new node(*il_iter++);
+        if (prev_node)
+        {
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+        }
+        else 
+        {
+          /* we are modifying the head */
+          head = new_node;
+          new_node->prev = nullptr;
+        }
+        prev_node = ret_node = new_node;
+
+        while (il_iter != il_end) 
+        {
+          new_node = new node(*il_iter++);
+          new_node->prev = prev_node;
+          prev_node->next = new_node;
+          prev_node = new_node;
+        }
+        prev_node->next = cur_node;
+        cur_node->prev = prev_node;
+        return iterator(ret_node);
       }
+
 
       iterator erase (const_iterator position)
       {
