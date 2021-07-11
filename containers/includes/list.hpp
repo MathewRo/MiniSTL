@@ -1,3 +1,29 @@
+/*
+ *
+ * MIT License
+ *
+ * Copyright (c) 2021 Rohit Philip Mathew
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 #ifndef _LIST_HPP_ 
 #define _LIST_HPP_
 
@@ -356,7 +382,6 @@ namespace miniSTL {
       /* insert elements before the given iterator */
       iterator insert (const_iterator position, const value_type& val) 
       {
-        std::cout << "in insert 1" << std::endl;
         node *cur_node = position.iter_node, *prev_node = cur_node->prev;
         /* we are not handling a bad iterator being passed case */
 
@@ -380,7 +405,6 @@ namespace miniSTL {
 
       iterator insert (const_iterator position, size_type n, const value_type& val)
       {
-        std::cout << "in insert 2" << std::endl;
         //TODO understand what the behavior would be for this scenario
         if (!n) return position;
 
@@ -419,7 +443,6 @@ namespace miniSTL {
         iterator insert (const_iterator position, InputIterator first, InputIterator last)
         {
 
-          std::cout << "in insert 3" << std::endl;
           // TODO Understand what would be the behavior here?
           if (first == last) return position;
           node *cur_node = position.iter_node, *prev_node = cur_node->prev, 
@@ -454,7 +477,6 @@ namespace miniSTL {
 
       iterator insert (const_iterator position, value_type&& val)
       { 
-        std::cout << "in insert 4" << std::endl;
 
         node *cur_node = position.iter_node, *prev_node = cur_node->prev;
         /* we are not handling a bad iterator being passed case */
@@ -480,7 +502,7 @@ namespace miniSTL {
 
       iterator insert (const_iterator position, std::initializer_list<value_type> il)
       {
-        std::cout << "in insert 5" << std::endl;
+
         // TODO careful with the approach of copying anything to the stack
         // as this could mess up the values if the passed object could be 
         // modified by another thread. Since this API recieves a copy, 
