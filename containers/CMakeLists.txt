@@ -5,7 +5,11 @@ message(STATUS "Runtime path is " ${RUNTIME_PATH})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=gnu++0x -rdynamic -ggdb -Wall -D${MODE}")
 
-# For the library
+include(${RUNTIME_PATH}/gtest.cmake)
+# GTest needs threading support
+find_package (Threads)
+
+
 include_directories(
 	${RUNTIME_PATH}/containers/includes/
         ${RUNTIME_PATH}/tests
@@ -17,6 +21,8 @@ add_executable(array
 add_executable(list
  ${RUNTIME_PATH}/containers/tests/list.cpp
  )
+
+target_link_libraries(list PRIVATE gtest ${CMAKE_THREAD_LIBS_INIT} )
 
 set(EXECUTABLE_OUTPUT_PATH  ../bin/)
 
