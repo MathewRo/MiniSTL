@@ -32,183 +32,427 @@
 #include <initializer_list>
 #include <algorithm>
 
-namespace miniSTL {
+namespace miniSTL
+{
 
-  template <typename T, size_t _size>
-    class array {
-      public:
+  template<typename T, size_t _size>
+    class array
+    {
+    public:
 
-        /* typedefs */
-        typedef T                       value_type;
-        typedef value_type*             pointer;
-        typedef const pointer           const_pointer;
-        typedef value_type&             reference;
-        typedef const reference         const_reference;
-        typedef value_type*             iterator;
-        typedef const iterator          const_iterator;
-        typedef value_type*             reverse_iterator;
-        typedef const reverse_iterator  const_reverse_iterator;
-        typedef size_t                  size_type;
+      /* typedefs */
+      typedef T value_type;
+      typedef value_type *pointer;
+      typedef const pointer const_pointer;
+      typedef value_type &reference;
+      typedef const reference const_reference;
+      typedef value_type *iterator;
+      typedef const iterator const_iterator;
+      typedef value_type *reverse_iterator;
+      typedef const reverse_iterator const_reverse_iterator;
+      typedef size_t size_type;
 
-        /* public interfaces */
-        /* we are not adding anything specifc for zero sized arrays.
-           Please understand that for _size == 0, behavior is undefined,
-           though it may work without any crash */
+      /* public interfaces */
+      /* we are not adding anything specifc for zero sized arrays.
+       Please understand that for _size == 0, behavior is undefined,
+       though it may work without any crash */
 
-        /* Modifiers */
-        void fill(const value_type& val) 
+      /// Modifiers ///
+      /**
+       * fill/assign the array elements with required values
+       * iterators
+       *
+       * @param  : const value_type& - the value to be assigned
+       *           to each element
+       *
+       * @return : none
+       */
+      void
+      fill (const value_type &val)
+      {
+        for (size_type i = 0; i < _size; i++)
         {
-          for (size_type i = 0; i < _size; i++) {
 
-            buffer[i] = val;
-          }
+          buffer[i] = val;
         }
+      }
 
-        void swap (array& x) noexcept 
+      /**
+       * replace the elements in the array with the elements from
+       * the array that is passed as a param
+       *
+       * @param  : array&  - array from which the values need to be
+       *                     assigned
+       * @return : none
+       */
+      void
+      swap (array &x) noexcept
+      {
+        /* This function should not throw exceptions */
+        for (size_type i = 0; i < (_size < x.size () ? _size : x.size ()); i++)
         {
-          /* This function should not throw exceptions */
-          for (size_type i = 0; i < (_size < x.size()?_size:x.size()); i++) 
-          {
-            buffer[i] = x[i];
-          }
+          buffer[i] = x[i];
         }
+      }
 
-        /* Element access */
-        reference at(size_type n)
-        {
-          return buffer[n];
-        }
+      /// Element access ///
 
-        const_reference at(size_type n) const 
-        {
-          return buffer[n];
-        }
+      /**
+       * return the element at the position pointed by the param
+       *
+       * @param  : size_type  - index/position
+       *
+       * @return : reference - to the element at the position
+       */
+      reference
+      at (size_type n)
+      {
+        return buffer[n];
+      }
 
-        reference operator[](size_type n) 
-        {
-          return buffer[n];
-        }
+      /**
+       * return the element at the position pointed by the param
+       *
+       * @param  : size_type  - index/position
+       *
+       * @return : const_reference - to the element at the position
+       */
+      const_reference
+      at (size_type n) const
+      {
+        return buffer[n];
+      }
 
-        const_reference operator[](size_type n) const 
-        {
-          return buffer[n]; 
-        }
+      /**
+       * operator [] overloaded to access element at position
+       * pointed by the index
+       *
+       * @param  : size_type  - index/position
+       *
+       * @return : reference - to the element at the position
+       */
+      reference
+      operator[] (size_type n)
+      {
+        return buffer[n];
+      }
 
-        reference front() 
-        {
-          return buffer[0];
-        }
+      /**
+       * operator [] overloaded to access element at position
+       * pointed by the index
+       *
+       * @param  : size_type  - index/position
+       *
+       * @return : const_reference - to the element at the position
+       */
+      const_reference
+      operator[] (size_type n) const
+      {
+        return buffer[n];
+      }
 
-        const_reference front() const
-        {
-          return buffer[0];
-        }
+      /**
+       * returns a reference to the element at the start of
+       * the array
+       *
+       * @param  : none
+       *
+       * @return : reference - to the element at the start
+       */
+      reference
+      front ()
+      {
+        return buffer[0];
+      }
 
-        reference back() 
-        {
-          return buffer[_size-1];
-        }
+      /**
+       * returns a reference to the element at the start of
+       * the array
+       *
+       * @param  : none
+       *
+       * @return : const_reference - to the element at the start
+       */
+      const_reference
+      front () const
+      {
+        return buffer[0];
+      }
 
-        const_reference back() const
-        {
-          return buffer[_size-1];
-        }
+      /**
+       * returns a reference to the element at the end of
+       * the array
+       *
+       * @param  : none
+       *
+       * @return : reference - to the element at the end
+       */
+      reference
+      back ()
+      {
+        return buffer[_size - 1];
+      }
 
-        value_type* data() noexcept 
-        {
-          return (pointer)&buffer[0];
-        }
+      /**
+       * returns a reference to the element at the end of
+       * the array
+       *
+       * @param  : none
+       *
+       * @return : const_reference - to the element at the end
+       */
+      const_reference
+      back () const
+      {
+        return buffer[_size - 1];
+      }
 
-        const value_type* data() const noexcept
-        {
-          return (const_pointer)&buffer[0]; 
-        }
+      /**
+       * return a raw pointer to the start of array
+       *
+       * @param  : none
+       *
+       * @return : value_type* - pointer to start
+       */
+      value_type*
+      data () noexcept
+      {
+        return (pointer) &buffer[0];
+      }
 
-        /* capacity */
-        constexpr size_type size() const noexcept 
-        {
-          return _size;
-        }
+      /**
+       * return a raw pointer to the start of array
+       *
+       * @param  : none
+       *
+       * @return : const value_type* - pointer to start
+       */
+      const value_type*
+      data () const noexcept
+      {
+        return (const_pointer) &buffer[0];
+      }
 
-        constexpr size_type max_size() const noexcept 
-        {
-          return _size;
-        }
+      /// capacity ///
 
-        constexpr bool empty() const noexcept
-        {
-          return _size == 0;
-        }
+      /**
+       * return the size of the array
+       *
+       * @param  : none
+       *
+       * @return : size_type - size of the array
+       */
+      constexpr size_type
+      size () const noexcept
+      {
+        return _size;
+      }
 
-        /* iterators */
-        iterator begin() noexcept
-        {
-          return &buffer[0];
-        }
+      /**
+       * return the max size of array
+       *
+       * @param  : none
+       *
+       * @return : size_type - size of array
+       */
+      constexpr size_type
+      max_size () const noexcept
+      {
+        return _size;
+      }
 
-        const_iterator begin() const noexcept
-        {
-          return (const_iterator)&buffer[0];
-        }
+      /**
+       * checks if the array is empty
+       *
+       * @param  : none
+       *
+       * @return : bool - true if array is empty,
+       *                  false otherwise
+       */
+      constexpr bool
+      empty () const noexcept
+      {
+        return _size == 0;
+      }
 
-        const_iterator cbegin() const noexcept
-        {
-          return &buffer[0];
-        }
+      /// iterators ////
 
-        iterator end() noexcept
-        {
-          return &buffer[_size];
-        }
+      /**
+       * returns a iterator to the start of array
+       *
+       * @param  : none
+       *
+       * @return : iterator - to the start of the array
+       */
+      iterator
+      begin () noexcept
+      {
+        return &buffer[0];
+      }
 
-        const_iterator end() const noexcept
-        {
-          return (const_iterator)&buffer[_size];
-        }
+      /**
+       * returns a constant iterator to the start of array
+       *
+       * @param  : none
+       *
+       * @return : const_iterator - to the start of the array
+       */
+      const_iterator
+      begin () const noexcept
+      {
+        return (const_iterator) &buffer[0];
+      }
 
-        const_iterator cend() const noexcept
-        {
-          return &buffer[_size];
-        }
+      /**
+       * returns a constant iterator to the start of array
+       *
+       * @param  : none
+       *
+       * @return : const_iterator - to the start of the array
+       */
+      const_iterator
+      cbegin () const noexcept
+      {
+        return &buffer[0];
+      }
 
-        /* array is typincally defined as an aggregates in STL. Refer spec to understand more */   
-        T buffer[_size];
+      /**
+       * returns a iterator to the end of array
+       *
+       * @param  : none
+       *
+       * @return : iterator - to the end of the array
+       */
+      iterator
+      end () noexcept
+      {
+        return &buffer[_size];
+      }
+
+      /**
+       * returns a  iterator to the end of array
+       *
+       * @param  : none
+       *
+       * @return : const_iterator - to the end of the array
+       */
+      const_iterator
+      end () const noexcept
+      {
+        return (const_iterator) &buffer[_size];
+      }
+
+      /**
+       * returns a constant iterator to the end of array
+       *
+       * @param  : none
+       *
+       * @return : const_iterator - to the end of the array
+       */
+      const_iterator
+      cend () const noexcept
+      {
+        return &buffer[_size];
+      }
+
+      /* array is typincally defined as an aggregates in STL. Refer spec to understand more */
+      T buffer[_size];
     };
 
-
-  /* Relational operator implementation */
-  template <class T, size_t N>
-    bool operator== ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+  /**
+   * == operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs == rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator== (const array<T, N> &lhs, const array<T, N> &rhs)
     {
-      return (lhs.size() == rhs.size() && 
-          std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+      return (lhs.size () == rhs.size ()
+          && std::equal (lhs.begin (), lhs.end (), rhs.begin ()));
     }
 
-  template <class T, size_t N>
-    bool operator!= ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+  /**
+   * != operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs != rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator!= (const array<T, N> &lhs, const array<T, N> &rhs)
     {
       return !(lhs == rhs);
-    }	
+    }
 
-  template <class T, size_t N>
-    bool operator<  ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+  /**
+   * < operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs < rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator< (const array<T, N> &lhs, const array<T, N> &rhs)
     {
-      return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-    }	
+      return (std::lexicographical_compare (lhs.begin (), lhs.end (),
+                                            rhs.begin (), rhs.end ()));
+    }
 
-  template <class T, size_t N>
-    bool operator> ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+  /**
+   * > operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs > rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator> (const array<T, N> &lhs, const array<T, N> &rhs)
     {
       return (rhs < lhs);
     }
-  template <class T, size_t N>
-    bool operator<= ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+
+  /**
+   * <= operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs <= rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator<= (const array<T, N> &lhs, const array<T, N> &rhs)
     {
       return !(rhs < lhs);
     }
 
-  template <class T, size_t N>
-    bool operator>= ( const array<T,N>& lhs, const array<T,N>& rhs ) 
+  /**
+   * >= operator overloaded for array comparison
+   *
+   * @param  : const array<T, N> - lhs array
+   *         : const array<T, N> - rhs array
+   *
+   * @return : bool - true if lhs >= rhs
+   *           false otherwise
+   */
+  template<class T, size_t N>
+    bool
+    operator>= (const array<T, N> &lhs, const array<T, N> &rhs)
     {
       return !(lhs < rhs);
     }
