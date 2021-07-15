@@ -929,10 +929,17 @@ namespace miniSTL
         return last;
       }
 
+      /**
+       * swaps the contents of a list with the one passed
+       *
+       * @param  : list & - the list to swap from
+       * @return : none
+       */
       void
       swap (list &x)
       {
-
+        std::swap(head, x.head);
+        std::swap(tail, x.tail);
       }
 
       void

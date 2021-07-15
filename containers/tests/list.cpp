@@ -217,6 +217,18 @@ TEST(list_test, erase_method)
   compare_list (l1, l1_std);
 }
 
+TEST(list_test, swap_test)
+{
+  list<int> l1 = { 1, 2, 3, 4, 5, 6, 7 };
+  list<int> l2 = { 21, 31, 41 };
+  std::list<int> l1_std = { 1, 2, 3, 4, 5, 6, 7 };
+  std::list<int> l2_std = { 21, 31, 41 };
+  l1.swap (l2);
+  l1_std.swap (l2_std);
+  compare_list (l1, l1_std);
+  compare_list (l2, l2_std);
+}
+
 TEST(list_test, assignment_operator)
 {
   /* Assignment operator test*/
