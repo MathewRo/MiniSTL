@@ -150,7 +150,7 @@ namespace miniSTL
        */
       explicit
       list () :
-          head (nullptr), tail (nullptr)
+          m_head (nullptr), m_tail (nullptr), m_size (0)
       {
 
       }
@@ -166,7 +166,7 @@ namespace miniSTL
        */
       explicit
       list (size_type n) :
-          head (nullptr), tail (nullptr)
+          m_head (nullptr), m_tail (nullptr), m_size (0)
       {
         /// allocate n nodes with value zero ///
         for (size_type i = 0; i < n; i++)
@@ -186,7 +186,7 @@ namespace miniSTL
        * @return : none
        */
       list (size_type n, const value_type &val) :
-          head (nullptr), tail (nullptr)
+          m_head (nullptr), m_tail (nullptr), m_size (0)
       {
         for (size_type i = 0; i < n; i++)
         {
@@ -209,7 +209,7 @@ namespace miniSTL
       template<class InputIterator, typename = RequireInputIterator<
           InputIterator>>
         list (InputIterator first, InputIterator last) :
-            head (nullptr), tail (nullptr)
+            m_head (nullptr), m_tail (nullptr), m_size (0)
         {
           assign (first, last);
         }
@@ -221,7 +221,7 @@ namespace miniSTL
        * @return : none
        */
       list (const list &x) :
-          head (nullptr), tail (nullptr)
+          m_head (nullptr), m_tail (nullptr), m_size (0)
       {
         /// Do a deep copy ///
         for (auto &el : x)
@@ -238,9 +238,10 @@ namespace miniSTL
        */
       list (list &&x)
       {
-        head = x.head;
-        tail = x.tail;
-        x.head = x.tail = nullptr;
+        m_head = x.m_head;
+        m_tail = x.m_tail;
+        m_size = x.m_size;
+        x.m_head = x.m_tail = nullptr;
       }
 
       /**
@@ -251,7 +252,7 @@ namespace miniSTL
        * @return : none
        */
       list (std::initializer_list<value_type> il) :
-          head (nullptr), tail (nullptr)
+          m_head (nullptr), m_tail (nullptr), m_size (0)
       {
         assign (il.begin (), il.end ());
       }
@@ -311,9 +312,10 @@ namespace miniSTL
         }
 
         erase (begin (), end ());
-        head = x.head;
-        tail = x.tail;
-        x.head = x.tail = nullptr;
+        m_head = x.m_head;
+        m_tail = x.m_tail;
+        m_size = x.m_size;
+        x.m_head = x.m_tail = nullptr;
         return *this;
       }
 
@@ -347,7 +349,7 @@ namespace miniSTL
       reference
       back ()
       {
-        return (reference) tail->data;
+        return (reference) m_tail->data;
       }
 
       /**
@@ -363,7 +365,7 @@ namespace miniSTL
       const_reference
       back () const
       {
-        return (const_reference) tail->data;
+        return (const_reference) m_tail->data;
       }
 
       /**
@@ -379,7 +381,7 @@ namespace miniSTL
       reference
       front ()
       {
-        return (reference) head->data;
+        return (reference) m_head->data;
       }
 
       /**
@@ -395,7 +397,7 @@ namespace miniSTL
       const_reference
       front () const
       {
-        return (const_reference) head->data;
+        return (const_reference) m_head->data;
       }
 
       /**
@@ -419,7 +421,7 @@ namespace miniSTL
            using existing nodes and allocating only if there
            are more nodes than what already exists
            */
-          iterator temp (head);
+          iterator temp (m_head);
           while (temp.iter_node != nullptr && first != last)
           {
             *temp++ = *first++;
@@ -458,7 +460,7 @@ namespace miniSTL
           return;
         }
 
-        iterator temp (head);
+        iterator temp (m_head);
         while (temp.iter_node != nullptr && n)
         {
           *temp++ = val;
@@ -498,7 +500,7 @@ namespace miniSTL
           return;
         }
 
-        iterator temp (head);
+        iterator temp (m_head);
         auto il_iter = il.begin ();
 
         while (temp.iter_node != nullptr && il_iter != il.end ())
@@ -564,13 +566,14 @@ namespace miniSTL
         if (empty ())
           return;
 
-        node *cur_node = head;
-        head = head->next;
-        if (head != nullptr)
+        node *cur_node = m_head;
+        m_head = m_head->next;
+        if (m_head != nullptr)
         {
-          head->prev = nullptr;
+          m_head->prev = nullptr;
         }
         delete cur_node;
+        m_size--;
       }
 
       /**
@@ -617,13 +620,14 @@ namespace miniSTL
         if (empty ())
           return;
 
-        node *cur_node = tail;
-        tail = tail->prev;
-        if (tail != nullptr)
+        node *cur_node = m_tail;
+        m_tail = m_tail->prev;
+        if (m_tail != nullptr)
         {
-          tail->next = nullptr;
+          m_tail->next = nullptr;
         }
         delete cur_node;
+        m_size--;
       }
 
       /**
@@ -650,11 +654,12 @@ namespace miniSTL
         {
           /* we are modifying head */
           new_node->prev = nullptr;
-          head = new_node;
+          m_head = new_node;
         }
 
         new_node->next = cur_node;
         cur_node->prev = new_node;
+        m_size++;
         return iterator (new_node);
       }
 
@@ -674,7 +679,7 @@ namespace miniSTL
         //TODO understand what the behavior would be for this scenario
         if (!n)
           return position;
-
+        size_t p_size = n;
         node *cur_node = position.iter_node, *prev_node = cur_node->prev,
             *new_node = nullptr, *ret_node = nullptr;
 
@@ -687,7 +692,7 @@ namespace miniSTL
         else
         {
           /* we are modifying the head */
-          head = new_node;
+          m_head = new_node;
           new_node->prev = nullptr;
         }
         prev_node = ret_node = new_node;
@@ -702,6 +707,7 @@ namespace miniSTL
         }
         prev_node->next = cur_node;
         cur_node->prev = prev_node;
+        m_size += p_size;
         return iterator (ret_node);
       }
 
@@ -726,7 +732,7 @@ namespace miniSTL
             return position;
           node *cur_node = position.iter_node, *prev_node = cur_node->prev,
               *new_node = nullptr, *ret_node = nullptr;
-
+          int p_size = std::distance (first, last);
           new_node = new node (*first++);
           if (prev_node)
           {
@@ -736,7 +742,7 @@ namespace miniSTL
           else
           {
             /* we are modifying the head */
-            head = new_node;
+            m_head = new_node;
             new_node->prev = nullptr;
           }
           prev_node = ret_node = new_node;
@@ -750,7 +756,7 @@ namespace miniSTL
           }
           prev_node->next = cur_node;
           cur_node->prev = prev_node;
-
+          m_size += p_size;
           return iterator (ret_node);
         }
 
@@ -780,10 +786,11 @@ namespace miniSTL
         {
           /* we are modifying head */
           new_node->prev = nullptr;
-          head = new_node;
+          m_head = new_node;
         }
         new_node->next = cur_node;
         cur_node->prev = new_node;
+        m_size++;
         return iterator (new_node);
       }
 
@@ -800,42 +807,7 @@ namespace miniSTL
       iterator
       insert (const_iterator position, std::initializer_list<value_type> il)
       {
-
-        // TODO careful with the approach of copying anything to the stack
-        // as this could mess up the values if the passed object could be 
-        // modified by another thread. Since this API recieves a copy, 
-        // this should be fine for timebeing. Marking this as TODO to 
-        // take care of thread safety and other aspects later on
-        auto il_iter = il.begin (), il_end = il.end ();
-        if (il_iter == il_end)
-          return position;
-        node *cur_node = position.iter_node, *prev_node = cur_node->prev,
-            *new_node = nullptr, *ret_node = nullptr;
-
-        new_node = new node (*il_iter++);
-        if (prev_node)
-        {
-          new_node->prev = prev_node;
-          prev_node->next = new_node;
-        }
-        else
-        {
-          /* we are modifying the head */
-          head = new_node;
-          new_node->prev = nullptr;
-        }
-        prev_node = ret_node = new_node;
-
-        while (il_iter != il_end)
-        {
-          new_node = new node (*il_iter++);
-          new_node->prev = prev_node;
-          prev_node->next = new_node;
-          prev_node = new_node;
-        }
-        prev_node->next = cur_node;
-        cur_node->prev = prev_node;
-        return iterator (ret_node);
+        return insert (position, il.begin (), il.end ());
       }
 
       /**
@@ -859,7 +831,7 @@ namespace miniSTL
         else
         {
           /* We are erasing head */
-          head = next_node;
+          m_head = next_node;
         }
         if (next_node)
         {
@@ -867,10 +839,11 @@ namespace miniSTL
         }
         else
         {
-          /* We are erasing tail*/
-          tail = prev_node;
+          /* We are erasing m_tail*/
+          m_tail = prev_node;
         }
         delete cur_node;
+        m_size--;
         return iterator (ret_node);
       }
 
@@ -894,7 +867,7 @@ namespace miniSTL
         {
           return first;
         }
-
+        size_type p_size = std::distance (first, last);
         node *first_node = first.iter_node, *last_node = last.iter_node,
             *prev_node = first_node->prev, *next_node = last_node, *temp_node =
                 nullptr;
@@ -914,7 +887,7 @@ namespace miniSTL
         else
         {
           /* We are erasing head */
-          head = next_node;
+          m_head = next_node;
         }
         if (next_node)
         {
@@ -922,10 +895,10 @@ namespace miniSTL
         }
         else
         {
-          /* We are erasing tail*/
-          tail = prev_node;
+          /* We are erasing m_tail*/
+          m_tail = prev_node;
         }
-
+        m_size = (m_size > p_size) ? m_size - p_size : 0;
         return last;
       }
 
@@ -938,14 +911,43 @@ namespace miniSTL
       void
       swap (list &x)
       {
-        std::swap(head, x.head);
-        std::swap(tail, x.tail);
+        std::swap (m_head, x.m_head);
+        std::swap (m_tail, x.m_tail);
+        std::swap (m_size, x.m_size);
       }
 
+      /**
+       * returns the size of the list
+       *
+       *
+       * @param  : none
+       * @return : size_type - denoting size of the list
+       */
+      size_type
+      size () const noexcept
+      {
+        return m_size;
+      }
+      /**
+       * re-sizes the list. if size is greater than current
+       * size, new nodes are allocated, else existing nodes
+       * are removed. list is default value initialized in this
+       * case
+       *
+       * @param  : n - new size of the list
+       * @return : none
+       */
       void
       resize (size_type n)
       {
-
+        if (n > m_size)
+        {
+          //proceed to remove nodes from end
+        }
+        else if (n < m_size)
+        {
+          //proceed to push_back
+        }
       }
 
       void
@@ -963,19 +965,19 @@ namespace miniSTL
       iterator
       begin () noexcept
       {
-        return iterator (head);
+        return iterator (m_head);
       }
 
       const_iterator
       begin () const noexcept
       {
-        return (const_iterator) iterator (head);
+        return (const_iterator) iterator (m_head);
       }
 
       const_iterator
       cbegin () const noexcept
       {
-        return (const_iterator) iterator (head);
+        return (const_iterator) iterator (m_head);
       }
 
       iterator
@@ -999,7 +1001,7 @@ namespace miniSTL
       inline bool
       empty () const
       {
-        return head == nullptr;
+        return m_head == nullptr;
       }
 
     private:
@@ -1009,14 +1011,15 @@ namespace miniSTL
       {
         if (empty ())
         {
-          head = tail = cur_node;
+          m_head = m_tail = cur_node;
         }
         else
         {
-          cur_node->next = head;
-          head->prev = cur_node;
-          head = cur_node;
+          cur_node->next = m_head;
+          m_head->prev = cur_node;
+          m_head = cur_node;
         }
+        m_size++;
       }
 
       void
@@ -1024,14 +1027,15 @@ namespace miniSTL
       {
         if (empty ())
         {
-          head = tail = cur_node;
+          m_head = m_tail = cur_node;
         }
         else
         {
-          tail->next = cur_node;
-          cur_node->prev = tail;
-          tail = cur_node;
+          m_tail->next = cur_node;
+          cur_node->prev = m_tail;
+          m_tail = cur_node;
         }
+        m_size++;
       }
 
       /* list node type */
@@ -1053,7 +1057,8 @@ namespace miniSTL
         {
         }
       };
-      node *head, *tail;
+      node *m_head, *m_tail;
+      size_type m_size;
     };
 
 }

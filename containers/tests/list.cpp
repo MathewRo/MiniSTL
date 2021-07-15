@@ -103,6 +103,8 @@ template<typename T>
     }
     ASSERT_EQ(1, _l_valid_last == _l.begin ());
     ASSERT_EQ(1, _l_std_valid_last == _l_std.begin ());
+    print2(_l.size(), _l_std.size());
+    ASSERT_EQ(1, _l.size() == _l_std.size());
   }
 
 /**
