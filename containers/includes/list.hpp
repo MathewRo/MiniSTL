@@ -116,13 +116,86 @@ namespace miniSTL
         node *iter_node;
       };
 
+      /* should iterators be aggregates? */
+      struct reverse_iterator
+      {
+        reverse_iterator () :
+            iter_node (nullptr)
+        {
+        }
+        reverse_iterator (node *val) :
+            iter_node (val)
+        {
+        }
+        friend class list<T> ;
+        using iterator_category = std::input_iterator_tag;
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = T*;
+        using reference = T&;
+
+        /* postfix */
+        reverse_iterator
+        operator++ (int)
+        {
+          node *previous = iter_node;
+          iter_node = iter_node->prev;
+          return reverse_iterator (previous);
+        }
+
+        /* prefix */
+        reverse_iterator&
+        operator++ ()
+        {
+          iter_node = iter_node->prev;
+          return *this;
+        }
+
+        /* postfix */
+        reverse_iterator
+        operator-- (int)
+        {
+          node *previous = iter_node;
+          iter_node = iter_node->next;
+          return reverse_iterator (previous);
+        }
+
+        /* prefix */
+        reverse_iterator&
+        operator-- ()
+        {
+          iter_node = iter_node->next;
+          return *this;
+        }
+
+        bool
+        operator!= (const reverse_iterator &iter)
+        {
+          return iter_node != iter.iter_node;
+        }
+
+        bool
+        operator== (const reverse_iterator &iter)
+        {
+          return iter_node == iter.iter_node;
+        }
+
+        T&
+        operator* ()
+        {
+          return iter_node->data;
+        }
+
+      private:
+        node *iter_node;
+      };
+
       typedef T value_type;
       typedef value_type *pointer;
       typedef const pointer const_pointer;
       typedef value_type &reference;
       typedef const reference const_reference;
       typedef const iterator const_iterator;
-      typedef value_type *reverse_iterator;
       typedef const reverse_iterator const_reverse_iterator;
       typedef size_t size_type;
 
@@ -171,7 +244,7 @@ namespace miniSTL
         /// allocate n nodes with value zero ///
         for (size_type i = 0; i < n; i++)
         {
-          push_back (0);
+          push_back (T ());
         }
       }
 
@@ -928,6 +1001,7 @@ namespace miniSTL
       {
         return m_size;
       }
+
       /**
        * re-sizes the list. if size is greater than current
        * size, new nodes are allocated, else existing nodes
@@ -940,16 +1014,25 @@ namespace miniSTL
       void
       resize (size_type n)
       {
-        //T val = T();
-        resize(n, T());
+        resize (n, T ());
       }
 
+      /**
+       * re-sizes the list. if size is greater than current
+       * size, new nodes are allocated, else existing nodes
+       * are removed. list is default value initialized in this
+       * case
+       *
+       * @param  : n - new size of the list
+       *           value_type & - value to initialize new
+       *           elements with
+       * @return : none
+       */
       void
       resize (size_type n, const value_type &val)
       {
         if (n < m_size)
         {
-          //proceed to remove nodes from end
           while (n != m_size)
           {
             pop_back ();
@@ -957,7 +1040,6 @@ namespace miniSTL
         }
         else if (n > m_size)
         {
-          //proceed to push_back
           while (n != m_size)
           {
             push_back (val);
@@ -965,48 +1047,121 @@ namespace miniSTL
         }
       }
 
+      /**
+       * clear all elements from the list
+       *
+       * @param  : none
+       * @return : none
+       */
       void
       clear () noexcept
       {
-
+        erase (begin (), end ());
       }
 
+      /**
+       * get an iterator to the start of the list
+       *
+       * @param  : none
+       * @return : iterator to the start of the list
+       */
       iterator
       begin () noexcept
       {
         return iterator (m_head);
       }
 
+      /**
+       * get a constant iterator to the start of the list
+       *
+       * @param  : none
+       * @return : constant iterator to the start of the list
+       */
       const_iterator
       begin () const noexcept
       {
-        return (const_iterator) iterator (m_head);
+        return const_iterator(m_head);
       }
 
+      /**
+       * get a constant iterator to the start of the list
+       *
+       * @param  : none
+       * @return : constant iterator to the start of the list
+       */
       const_iterator
       cbegin () const noexcept
       {
-        return (const_iterator) iterator (m_head);
+        return const_iterator(m_head);
       }
 
+      /**
+       * get an iterator to the end of the list
+       *
+       * @param  : none
+       * @return : iterator to the end of the list
+       */
       iterator
       end () noexcept
       {
         return iterator (nullptr);
       }
 
+      /**
+       * get a constant iterator to the end of the list
+       *
+       * @param  : none
+       * @return : constant iterator to the end of the list
+       */
       const_iterator
       end () const noexcept
       {
-        return (const_iterator) iterator (nullptr);
+        return const_iterator (nullptr);
       }
 
+      /**
+       * Get a constant iterator to the tail of
+       * the list
+       *
+       * @param  : none
+       * @return : constant iterator to the end of
+       *           the list
+       */
       const_iterator
       cend () const noexcept
       {
-        return (const_iterator) iterator (nullptr);
+        return const_iterator(nullptr);
       }
 
+      /**
+       * Get a constant iterator to the tail of
+       * the list
+       *
+       * @param  : none
+       * @return : constant iterator to the end of
+       *           the list
+       */
+      reverse_iterator crbegin() noexcept
+      {
+        iterator p_iter(m_head), p_iter_prev(nullptr);
+        while (p_iter != end())
+        {
+          p_iter_prev = p_iter++;
+        }
+        return reverse_iterator(p_iter_prev.iter_node);
+      }
+
+      reverse_iterator crend() noexcept
+      {
+        return reverse_iterator(nullptr);
+      }
+
+      /**
+       * check if list is empty or not
+       *
+       * @param  : none
+       * @return : bool - true if list is empty
+       */
       inline bool
       empty () const
       {

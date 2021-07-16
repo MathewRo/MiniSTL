@@ -422,17 +422,42 @@ TEST(list_test, resize_test)
     for (int i = 1; i < 10; ++i)
     {
       l1.push_back (i);
-      l1_std.push_back(i);
+      l1_std.push_back (i);
     }
 
     l1.resize (5);
-    l1_std.resize(5);
+    l1_std.resize (5);
     l1.resize (8, 100);
-    l1_std.resize(8, 100);
+    l1_std.resize (8, 100);
     l1.resize (12);
-    l1_std.resize(12);
+    l1_std.resize (12);
     compare_list (l1, l1_std);
 
+  }
+}
+
+TEST(list_test, reverse_iterator)
+{
+  {
+    list<int> l1;
+    std::list<int> l1_std;
+
+    for (int i = 1; i < 10; ++i)
+    {
+      l1.push_back (i);
+      l1_std.push_back (i);
+    }
+
+    list<int>::reverse_iterator cr_iter = l1.crbegin ();
+    std::list<int>::const_reverse_iterator cr_iter_std = l1_std.crbegin ();
+
+    while (cr_iter != l1.crend () && cr_iter_std != l1_std.crend ())
+    {
+      ASSERT_EQ(*cr_iter++, *cr_iter_std++);
+    }
+    ASSERT_EQ(1, cr_iter == l1.crend ());
+    ASSERT_EQ(1, cr_iter_std == l1_std.crend());
+    compare_list (l1, l1_std);
   }
 }
 
