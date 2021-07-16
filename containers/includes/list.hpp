@@ -940,20 +940,29 @@ namespace miniSTL
       void
       resize (size_type n)
       {
-        if (n > m_size)
-        {
-          //proceed to remove nodes from end
-        }
-        else if (n < m_size)
-        {
-          //proceed to push_back
-        }
+        //T val = T();
+        resize(n, T());
       }
 
       void
       resize (size_type n, const value_type &val)
       {
-
+        if (n < m_size)
+        {
+          //proceed to remove nodes from end
+          while (n != m_size)
+          {
+            pop_back ();
+          }
+        }
+        else if (n > m_size)
+        {
+          //proceed to push_back
+          while (n != m_size)
+          {
+            push_back (val);
+          }
+        }
       }
 
       void

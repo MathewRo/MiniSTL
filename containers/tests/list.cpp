@@ -103,8 +103,8 @@ template<typename T>
     }
     ASSERT_EQ(1, _l_valid_last == _l.begin ());
     ASSERT_EQ(1, _l_std_valid_last == _l_std.begin ());
-    print2(_l.size(), _l_std.size());
-    ASSERT_EQ(1, _l.size() == _l_std.size());
+    print2(_l.size (), _l_std.size ());
+    ASSERT_EQ(1, _l.size () == _l_std.size ());
   }
 
 /**
@@ -408,6 +408,29 @@ TEST(list_test, insert)
 
     iter = l1.insert (iter, { 99, 88, 77, 66, 55 });
     iter_std = l1_std.insert (iter_std, { 99, 88, 77, 66, 55 });
+    compare_list (l1, l1_std);
+
+  }
+}
+
+TEST(list_test, resize_test)
+{
+  {
+    list<int> l1;
+    std::list<int> l1_std;
+
+    for (int i = 1; i < 10; ++i)
+    {
+      l1.push_back (i);
+      l1_std.push_back(i);
+    }
+
+    l1.resize (5);
+    l1_std.resize(5);
+    l1.resize (8, 100);
+    l1_std.resize(8, 100);
+    l1.resize (12);
+    l1_std.resize(12);
     compare_list (l1, l1_std);
 
   }
